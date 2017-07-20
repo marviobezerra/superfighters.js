@@ -1,0 +1,38 @@
+{
+    "name": "superfighters",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "clean": "del-cli wwwroot/* src/**/*.js src/**/*.js.map",
+        "start": "npm run clean && webpack-dev-server --watch --color --hot --open --env dev"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marviobezerra/superfighters.js.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/marviobezerra/superfighters.js/issues"
+    },
+    "homepage": "https://github.com/marviobezerra/superfighters.js#readme",
+    "devDependencies": {
+        "@types/createjs": "0.0.29",
+        "@types/easeljs": "^0.8.36",
+        "@types/node": "^8.0.14",
+        "@types/preloadjs": "^0.6.32",
+        "@types/soundjs": "^0.6.27",
+        "@types/tweenjs": "^0.6.27",
+        "awesome-typescript-loader": "^3.2.1",
+        "copy-webpack-plugin": "^4.0.1",
+        "del-cli": "^1.1.0",
+        "file-loader": "^0.11.2",
+        "html-webpack-plugin": "^2.29.0",
+        "source-map-loader": "^0.2.1",
+        "typescript": "^2.4.2",
+        "webpack": "^3.3.0",
+        "webpack-dev-server": "^2.5.1",
+        "webpack-merge": "^4.1.0"
+    }
+}

@@ -1,0 +1,13 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "editor.insertSpaces": false,
+    "files.exclude": {
+        ".gitignore": true,
+        "package-lock.json": true,
+        ".vs": true,
+        "lib": true,
+        "wwwroot": true,
+        "node_modules": true,
+        "LICENSE": true
+    }
+}

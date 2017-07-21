@@ -25,7 +25,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(png|jpg|gif|json|mp3)$/,
+                test: /\.(png|jpg|gif|mp3|json)$/,
                 use: ['file-loader?name=[path]/[name].[ext]']
             }
         ]

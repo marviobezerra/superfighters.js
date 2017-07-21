@@ -1,27 +1,42 @@
 import { Action, Action01 } from '../common/util';
 
-interface IManifest {
-	scr: string;
-	id: string;
+import '../../data/images/Mai/mai-data.json';
+import '../../data/images/Mai/mai-image.png';
+
+import '../../data/images/Leona/leona-data.json';
+import '../../data/images/Leona/leona-image.png';
+
+export enum Players {
+	May,
+	Kyo,
+	Leona,
+	Yory
 }
 
 export class AssertsManager {
 
-	public Queue: createjs.LoadQueue;
-
-	public readonly Mai = "Mai";
-
-	private Manifest: Array<IManifest> = [
-		{ id: this.Mai, scr: "data/images/Mai/Mai.json" }
-	];
+	private Queue: createjs.LoadQueue;
 
 	constructor(onComplete: Action, onProgress: Action01<number>, onError: Action01<any>) {
 		this.Queue = new createjs.LoadQueue(true);
-		
+
 		this.Queue.on("complete", onComplete);
 		this.Queue.on("progress", onProgress);
 		this.Queue.on("error", onError);
 
-		this.Queue.loadManifest(this.Manifest);
+		this.Queue.loadManifest(this.Manifest());
+	}
+
+	private Manifest(): any {
+		return {
+			manifest: [
+				{ "id": Players.May, "src": "/data/images/Mai/mai-data.json" },
+				{ "id": Players.Leona, "src": "/data/images/Leona/leona-data.json" }
+			]
+		};
+	};
+
+	public Load(player: Players): any {
+		return this.Queue.getResult(player);
 	}
 }

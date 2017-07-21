@@ -1,5 +1,5 @@
-import { Mai } from './characters/Mai';
-import { AssertsManager } from './asserts/asserts-manager';
+import { Caracter } from './characters/Character';
+import { AssertsManager, Players } from './asserts/asserts-manager';
 
 export class Game {
 
@@ -14,12 +14,15 @@ export class Game {
 		createjs.Ticker.setFPS(60);
 		createjs.Ticker.addEventListener("tick", this.Tick.bind(this));
 
-		this.Asserts = new AssertsManager(this.Start, this.Progress, this.Error);
+		this.Asserts = new AssertsManager(this.Start.bind(this), this.Progress.bind(this), this.Error.bind(this));
 	}
 
 	public Start(): void {
-		let player = new Mai();
-		this.Stage.addChild(player);
+		let playerOne = new Caracter(this.Asserts.Load(Players.Leona), true);
+		let playerTwo = new Caracter(this.Asserts.Load(Players.May), false);
+		
+		this.Stage.addChild(playerOne);
+		this.Stage.addChild(playerTwo);
 	}
 
 	public Progress(value: number): void {

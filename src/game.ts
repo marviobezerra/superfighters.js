@@ -20,9 +20,13 @@ export class Game {
 	public Start(): void {
 		let playerOne = new Caracter(this.Asserts.Load(Players.Leona), true);
 		let playerTwo = new Caracter(this.Asserts.Load(Players.May), false);
-		
+
+		var image = this.Asserts.Load(Players.MayPresentation);
+		var myBitmap = new createjs.Bitmap(image);
+
 		this.Stage.addChild(playerOne);
 		this.Stage.addChild(playerTwo);
+		this.Stage.addChild(myBitmap);
 	}
 
 	public Progress(value: number): void {

@@ -5,9 +5,11 @@ import '../../data/images/Mai/mai-image.png';
 
 import '../../data/images/Leona/leona-data.json';
 import '../../data/images/Leona/leona-image.png';
+import '../../data/images/May_8070-0.png';
 
 export enum Players {
 	May,
+	MayPresentation,
 	Kyo,
 	Leona,
 	Yory
@@ -30,6 +32,7 @@ export class AssertsManager {
 	private Manifest(): any {
 		return {
 			manifest: [
+				{ "id": Players.MayPresentation, "src": "/data/images/May_8070-0.png" },
 				{ "id": Players.May, "src": "/data/images/Mai/mai-data.json" },
 				{ "id": Players.Leona, "src": "/data/images/Leona/leona-data.json" }
 			]

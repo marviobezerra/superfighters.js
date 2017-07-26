@@ -1,10 +1,21 @@
 import { AssetsManager, Assets } from '../assets/assets-manager';
-export class GameMenu extends createjs.Container{
-	
+
+export enum Option{
+	Play,
+	Controls		
+}
+
+export class GameMenu extends createjs.Container{	
+
+	GameTitle = "Super Fighter JS";
+	CurrentOption = Option.Play;
+	PlayOption: createjs.Text;
+	ControlsOption:createjs.Text;	
 
 	constructor(private assetsManager:AssetsManager){
 		super();
 		this.addBg();
+		this.addTextLayer();
 		this.registerSounds();
 		this.registerEvents();
 	}
@@ -13,6 +24,29 @@ export class GameMenu extends createjs.Container{
 	addBg(){
 		let bg = new createjs.Bitmap(this.assetsManager.Load(Assets.Menu));
 		this.addChild(bg);
+	}
+
+	addTextLayer(){
+		let title = new createjs.Text(this.GameTitle,"100px FreeStyle Script", "#FFF");
+		this.addChild(title);
+		title.alpha = 0;
+		
+		title.x = (this.getBounds().width / 2 ) - (title.getBounds().width / 2);
+		title.y = 10;
+
+		createjs.Tween.get(title, {loop:true}).to({alpha:1}, 500);
+
+		this.PlayOption = new createjs.Text("Play", "80px FreeStyle Script", "#F00");		
+		this.ControlsOption = new createjs.Text("Controls", "80px FreeStyle Script", "#FFF");
+
+		this.addChild(this.PlayOption,this.ControlsOption);
+
+		this.PlayOption.x = this.getBounds().width / 2 + 10;
+		this.PlayOption.y = this.getBounds().height / 2 - 50;
+
+		this.ControlsOption.x = this.PlayOption.x;
+		this.ControlsOption.y = this.PlayOption.y + 100;
+
 	}
 	
 	registerSounds(){
@@ -29,9 +63,33 @@ export class GameMenu extends createjs.Container{
 	}
 
 	registerEvents(): any {
-		document.addEventListener('keydown',(event) => {			
-			this.playSelect();
+		document.addEventListener('keydown',(event:KeyboardEvent) => {
+			switch (event.key) {
+				case 'w':
+				case 'ArrowUp':	
+				case 's':
+				case 'ArrowDown':					
+					this.changeOption(this.CurrentOption);	
+					this.playSelect();		
+					break;
+				case 'enter':
+					//load scene;
+					break;
+			}			
+			
 		});
+	}
+
+	changeOption(current:Option){
+		if (current === Option.Controls){
+			this.PlayOption.color = "red";
+			this.ControlsOption.color = "white";
+			this.CurrentOption = Option.Play;
+		} else {
+			this.PlayOption.color = "white";
+			this.ControlsOption.color = "red";
+			this.CurrentOption = Option.Controls;
+		}
 	}
 
 
@@ -43,6 +101,6 @@ export class GameMenu extends createjs.Container{
 
 	playSelect(){		
 		let instance = createjs.Sound.play('select');
-		instance.volume = 0.05;
+		instance.volume = 0.1;
 	}
 }

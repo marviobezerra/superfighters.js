@@ -54,11 +54,23 @@ export class GameMenu extends createjs.Container{
 
 		this.addChild(this.PlayOption,this.ControlsOption);
 
-		this.PlayOption.x = this.getBounds().width / 2 + 10;
-		this.PlayOption.y = this.getBounds().height / 2 - 50;
 
-		this.ControlsOption.x = this.PlayOption.x;
+		this.PlayOption.y = this.getBounds().height / 2 - 50;
 		this.ControlsOption.y = this.PlayOption.y + 100;
+
+		this.PlayOption.x = this.Canvas.width + this.PlayOption.getBounds().width;
+		this.ControlsOption.x = this.Canvas.width + this.ControlsOption.getBounds().width;
+
+		// this.PlayOption.x = this.getBounds().width / 2 + 10;
+		// this.ControlsOption.x = this.PlayOption.x;
+
+		
+		createjs.Tween.get(this.PlayOption).to({x:this.Canvas.width / 2 + 10}, 2000, createjs.Ease.getPowInOut(6));
+		createjs.Tween.get(this.ControlsOption).to({x:this.Canvas.width/2 + 10}, 2000, createjs.Ease.getPowInOut(6));
+		
+
+		
+		
 
 	}
 	

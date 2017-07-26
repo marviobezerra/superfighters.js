@@ -32,20 +32,23 @@ export class GameMenu extends createjs.Container{
 		let ratioX = 1 - bg.getBounds().width / this.Canvas.width;
 		let ratioY = 1 - bg.getBounds().height / this.Canvas.height;
 
-		bg.scaleX = bg.scaleX + ratioX;
-		bg.scaleY = bg.scaleY + ratioY;
+		bg.scaleX = bg.scaleX + ratioX + 0.128;
+		bg.scaleY = bg.scaleY + ratioY + 0.128;
 	}
 
 	addTextLayer(){
 		let title = new createjs.Text(this.GameTitle.toUpperCase(),"100px Haettenschweiler", "#FFF");
 		this.addChild(title);
 		title.alpha = 0;
+		title.scaleX = 0;
+		title.scaleY = 0
 		
 		title.x = (this.getBounds().width / 2 ) - (title.getBounds().width / 2);
 		title.y = 10;
 
-		createjs.Tween.get(title, {loop:true}).to({alpha:1}, 500);
-
+		createjs.Tween.get(title, {loop:false})
+			.to({alpha:1, scaleX:1, scaleY:1}, 1500, createjs.Ease.getPowInOut(6));
+						
 		this.PlayOption = new createjs.Text("Play", "80px Haettenschweiler", "#F00");		
 		this.ControlsOption = new createjs.Text("Controls", "80px Haettenschweiler", "#FFF");
 

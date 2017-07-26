@@ -1,5 +1,6 @@
 import { Character } from './characters/Character';
 import { AssetsManager, Assets } from './assets/assets-manager';
+import { GameMenu } from './scenes/GameMenu';
 
 export class Game {
 
@@ -18,15 +19,19 @@ export class Game {
 	}
 
 	public Start(): void {
-		let playerOne = new Character(this.Assets.Load(Assets.Leona), true);
-		let playerTwo = new Character(this.Assets.Load(Assets.May), false);
 
-		var image = this.Assets.Load(Assets.MayPresentation);
-		var myBitmap = new createjs.Bitmap(image);
+		let menuScene = new GameMenu(this.Assets);
+		this.Stage.addChild(menuScene);
 
-		this.Stage.addChild(playerOne);
-		this.Stage.addChild(playerTwo);
-		this.Stage.addChild(myBitmap);
+		// let playerOne = new Character(this.Assets.Load(Assets.Leona), true);
+		// let playerTwo = new Character(this.Assets.Load(Assets.May), false);
+
+		// var image = this.Assets.Load(Assets.Menu);
+		// var myBitmap = new createjs.Bitmap(image);
+
+		// this.Stage.addChild(playerOne);
+		// this.Stage.addChild(playerTwo);
+		// this.Stage.addChild(myBitmap);
 	}
 
 	public Progress(value: number): void {

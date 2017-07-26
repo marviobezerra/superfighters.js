@@ -1,8 +1,8 @@
-import { AssertsManager } from "../asserts/asserts-manager";
+import { AssetsManager } from "../assets/assets-manager";
 
 
 
-export class Caracter extends createjs.Sprite {
+export class Character extends createjs.Sprite {
 
 	private readonly Ground = 450;
 	private readonly KEYCODE_LEFT = 37;

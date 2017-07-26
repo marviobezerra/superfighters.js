@@ -7,7 +7,7 @@ import '../../data/images/Leona/leona-data.json';
 import '../../data/images/Leona/leona-image.png';
 import '../../data/images/May_8070-0.png';
 
-export enum Players {
+export enum Assets {
 	May,
 	MayPresentation,
 	Kyo,
@@ -15,7 +15,7 @@ export enum Players {
 	Yory
 }
 
-export class AssertsManager {
+export class AssetsManager {
 
 	private Queue: createjs.LoadQueue;
 
@@ -32,14 +32,14 @@ export class AssertsManager {
 	private Manifest(): any {
 		return {
 			manifest: [
-				{ "id": Players.MayPresentation, "src": "/data/images/May_8070-0.png" },
-				{ "id": Players.May, "src": "/data/images/Mai/mai-data.json" },
-				{ "id": Players.Leona, "src": "/data/images/Leona/leona-data.json" }
+				{ "id": Assets.MayPresentation, "src": "/data/images/May_8070-0.png" },
+				{ "id": Assets.May, "src": "/data/images/Mai/mai-data.json" },
+				{ "id": Assets.Leona, "src": "/data/images/Leona/leona-data.json" }
 			]
 		};
 	};
 
-	public Load(player: Players): any {
-		return this.Queue.getResult(player);
+	public Load(asset: Assets): any {
+		return this.Queue.getResult(asset);
 	}
 }

@@ -1,11 +1,11 @@
-import { Caracter } from './characters/Character';
-import { AssertsManager, Players } from './asserts/asserts-manager';
+import { Character } from './characters/Character';
+import { AssetsManager, Assets } from './assets/assets-manager';
 
 export class Game {
 
 	public Canvas: HTMLCanvasElement;
 	public Stage: createjs.Stage;
-	public Asserts: AssertsManager;
+	public Assets: AssetsManager;
 
 	constructor(element: string) {
 		this.Stage = new createjs.Stage(document.getElementById(element));
@@ -14,14 +14,14 @@ export class Game {
 		createjs.Ticker.setFPS(60);
 		createjs.Ticker.addEventListener("tick", this.Tick.bind(this));
 
-		this.Asserts = new AssertsManager(this.Start.bind(this), this.Progress.bind(this), this.Error.bind(this));
+		this.Assets = new AssetsManager(this.Start.bind(this), this.Progress.bind(this), this.Error.bind(this));
 	}
 
 	public Start(): void {
-		let playerOne = new Caracter(this.Asserts.Load(Players.Leona), true);
-		let playerTwo = new Caracter(this.Asserts.Load(Players.May), false);
+		let playerOne = new Character(this.Assets.Load(Assets.Leona), true);
+		let playerTwo = new Character(this.Assets.Load(Assets.May), false);
 
-		var image = this.Asserts.Load(Players.MayPresentation);
+		var image = this.Assets.Load(Assets.MayPresentation);
 		var myBitmap = new createjs.Bitmap(image);
 
 		this.Stage.addChild(playerOne);

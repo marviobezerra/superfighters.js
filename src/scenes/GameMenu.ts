@@ -11,8 +11,9 @@ export class GameMenu extends createjs.Container{
 	CurrentOption = Option.Play;
 	PlayOption: createjs.Text;
 	ControlsOption:createjs.Text;	
+	
 
-	constructor(private assetsManager:AssetsManager){
+	constructor(private assetsManager:AssetsManager, private Canvas:HTMLCanvasElement){
 		super();
 		this.addBg();
 		this.addTextLayer();
@@ -22,12 +23,21 @@ export class GameMenu extends createjs.Container{
 
 
 	addBg(){
-		let bg = new createjs.Bitmap(this.assetsManager.Load(Assets.Menu));
+		let bg = new createjs.Bitmap(this.assetsManager.Load(Assets.Menu));		
 		this.addChild(bg);
+		this.adjustBackgroundSize(bg);
+	}
+
+	adjustBackgroundSize(bg:createjs.Bitmap){
+		let ratioX = 1 - bg.getBounds().width / this.Canvas.width;
+		let ratioY = 1 - bg.getBounds().height / this.Canvas.height;
+
+		bg.scaleX = bg.scaleX + ratioX;
+		bg.scaleY = bg.scaleY + ratioY;
 	}
 
 	addTextLayer(){
-		let title = new createjs.Text(this.GameTitle,"100px FreeStyle Script", "#FFF");
+		let title = new createjs.Text(this.GameTitle.toUpperCase(),"100px Haettenschweiler", "#FFF");
 		this.addChild(title);
 		title.alpha = 0;
 		
@@ -36,8 +46,8 @@ export class GameMenu extends createjs.Container{
 
 		createjs.Tween.get(title, {loop:true}).to({alpha:1}, 500);
 
-		this.PlayOption = new createjs.Text("Play", "80px FreeStyle Script", "#F00");		
-		this.ControlsOption = new createjs.Text("Controls", "80px FreeStyle Script", "#FFF");
+		this.PlayOption = new createjs.Text("Play", "80px Haettenschweiler", "#F00");		
+		this.ControlsOption = new createjs.Text("Controls", "80px Haettenschweiler", "#FFF");
 
 		this.addChild(this.PlayOption,this.ControlsOption);
 
@@ -96,6 +106,7 @@ export class GameMenu extends createjs.Container{
 	playBgMusic(){		
 		let instance = createjs.Sound.play('bg1');
 		instance.position = 18000;
+		instance.setLoop(0);
 		instance.volume = 0.1;	
 	}
 

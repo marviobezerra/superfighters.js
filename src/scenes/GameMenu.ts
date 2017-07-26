@@ -37,7 +37,7 @@ export class GameMenu extends createjs.Container{
 
 	playBgMusic(){		
 		let instance = createjs.Sound.play('bg1');
-		instance.pan = 1800;
+		instance.position = 18000;
 		instance.volume = 0.1;	
 	}
 

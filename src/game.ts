@@ -20,7 +20,7 @@ export class Game {
 
 	public Start(): void {
 
-		let menuScene = new GameMenu(this.Assets);
+		let menuScene = new GameMenu(this.Assets, this.Canvas);
 		this.Stage.addChild(menuScene);
 
 		// let playerOne = new Character(this.Assets.Load(Assets.Leona), true);

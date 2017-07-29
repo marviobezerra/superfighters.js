@@ -1,12 +1,14 @@
 import { Character } from './characters/Character';
-import { AssetsManager, Assets } from './assets/assets-manager';
-import { GameMenu } from './scenes/GameMenu';
+import { AssetsManager, GameAssets } from './assets/assets-manager';
+import { SceneManager } from './scenes/SceneManager';
 
 export class Game {
 
-	public Canvas: HTMLCanvasElement;
-	public Stage: createjs.Stage;
-	public Assets: AssetsManager;
+	private Canvas: HTMLCanvasElement;
+	private Stage: createjs.Stage;
+	private Assets: AssetsManager;
+	private Manager: SceneManager;
+
 
 	constructor(element: string) {
 		this.Stage = new createjs.Stage(document.getElementById(element));
@@ -20,8 +22,7 @@ export class Game {
 
 	public Start(): void {
 
-		let menuScene = new GameMenu(this.Assets, this.Canvas);
-		this.Stage.addChild(menuScene);
+		this.Manager = new SceneManager(this.Stage, this.Assets, this.Canvas);
 
 		// let playerOne = new Character(this.Assets.Load(Assets.Leona), true);
 		// let playerTwo = new Character(this.Assets.Load(Assets.May), false);

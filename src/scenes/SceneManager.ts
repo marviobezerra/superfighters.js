@@ -1,4 +1,4 @@
-import { AssetsManager, GameAssets } from '../assets/assets-manager';
+import { AssetsManager, GameAssets, PlayerFight } from '../assets/assets-manager';
 import { SceneBase } from './SceneBase';
 import { GameMenu } from './GameMenu';
 import { GameControl } from './GameControl';
@@ -18,13 +18,15 @@ export enum SceneType {
 export interface IManager {
 	Load(sceneType: SceneType): void;
 	AssetsManager: AssetsManager;
-	Canvas: HTMLCanvasElement
+	Canvas: HTMLCanvasElement,
+	CurrentCaracter: PlayerFight
 }
 
 export class SceneManager implements IManager {
 
 	private Scenes: Map<SceneBase> = {};
 	private CurrentScene: SceneBase;
+	public CurrentCaracter = PlayerFight.Kyo;
 
 	constructor(private Stage: createjs.Stage, public AssetsManager: AssetsManager, public Canvas: HTMLCanvasElement) {
 		this.Load(SceneType.Menu);

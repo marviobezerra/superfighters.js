@@ -14,38 +14,41 @@ export class GameMenu extends SceneBase {
 	private PlayOption: createjs.Text;
 	private ControlsOption: createjs.Text;
 	private BackGroundMusic: createjs.AbstractSoundInstance;
-	private Events: any;
+	private BackGroundImage: createjs.Bitmap;
+	private KeyBoardEvents: any;
+	private WindowsEvents: any;
 
 	constructor(manager: IManager) {
 		super(manager);
-		this.AddBackGround();
+		this.AddBackground();
 		this.AddTextLayer();
 		this.RegisterSounds();
 
 		// It is required to avoid scope references
-		this.Events = this.RegisterEvents.bind(this);
+		this.KeyBoardEvents = this.RegisterEvents.bind(this);
+		this.WindowsEvents = this.AddBackground.bind(this);
 	}
 
 	public Register(): void {
-		document.addEventListener('keydown', this.Events, false);
+		document.addEventListener('keydown', this.KeyBoardEvents, false);
+		window.addEventListener('onresize', this.WindowsEvents, false);
+		this.AdjustBackgroundSize();
 	}
 
 	public UnRegister(): void {
-		document.removeEventListener('keydown', this.Events, false);
+		document.removeEventListener('keydown', this.KeyBoardEvents, false);
+		window.removeEventListener('onresize', this.WindowsEvents, false);
 	}
 
-	private AddBackGround(): void {
-		let backGround = new createjs.Bitmap(this.Manager.AssetsManager.Load(GameAssets.Menu));
-		this.addChild(backGround);
-		this.AdjustBackgroundSize(backGround);
+	private AddBackground(): void {
+		this.BackGroundImage = new createjs.Bitmap(this.Manager.AssetsManager.Load(GameAssets.Menu));
+		this.addChild(this.BackGroundImage);
+		this.AdjustBackgroundSize();
 	}
 
-	private AdjustBackgroundSize(bg: createjs.Bitmap): void {
-		let ratioX = 1 - bg.getBounds().width / this.Manager.Canvas.width;
-		let ratioY = 1 - bg.getBounds().height / this.Manager.Canvas.height;
-
-		bg.scaleX = bg.scaleX + ratioX + 0.128;
-		bg.scaleY = bg.scaleY + ratioY + 0.128;
+	private AdjustBackgroundSize(): void {
+		this.BackGroundImage.scaleX = this.Manager.Canvas.width / this.BackGroundImage.getBounds().width
+		this.BackGroundImage.scaleY = this.Manager.Canvas.height / this.BackGroundImage.getBounds().height;
 	}
 
 	private AddTextLayer(): void {

@@ -13,6 +13,8 @@ export class Game {
 	constructor(element: string) {
 		this.Stage = new createjs.Stage(document.getElementById(element));
 		this.Canvas = <HTMLCanvasElement>this.Stage.canvas;
+		this.Canvas.width = document.body.clientWidth;
+		this.Canvas.height = document.body.clientHeight;
 
 		createjs.Ticker.setFPS(60);
 		createjs.Ticker.addEventListener("tick", this.Tick.bind(this));
@@ -21,18 +23,7 @@ export class Game {
 	}
 
 	public Start(): void {
-
 		this.Manager = new SceneManager(this.Stage, this.Assets, this.Canvas);
-
-		// let playerOne = new Character(this.Assets.Load(Assets.Leona), true);
-		// let playerTwo = new Character(this.Assets.Load(Assets.May), false);
-
-		// var image = this.Assets.Load(Assets.Menu);
-		// var myBitmap = new createjs.Bitmap(image);
-
-		// this.Stage.addChild(playerOne);
-		// this.Stage.addChild(playerTwo);
-		// this.Stage.addChild(myBitmap);
 	}
 
 	public Progress(value: number): void {

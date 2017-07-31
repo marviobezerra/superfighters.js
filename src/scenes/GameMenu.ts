@@ -110,7 +110,15 @@ export class GameMenu extends SceneBase {
 				this.LaunchIntoFullscreen(document.documentElement);
 				break;
 			case 'Enter':
-				this.Manager.Load(SceneType.PlayerSelect);
+				switch (this.CurrentOption) {
+					case Option.Play:
+						this.Manager.Load(SceneType.PlayerSelect);
+						break;
+					case Option.Controls:
+						this.Manager.Load(SceneType.Controls);
+						break;					
+				}
+				
 				break;
 		};
 	}
@@ -132,7 +140,7 @@ export class GameMenu extends SceneBase {
 		if (!this.BackGroundMusic) {
 			this.BackGroundMusic = createjs.Sound.play('bg1');
 			this.BackGroundMusic.position = 18000;
-			this.BackGroundMusic.setLoop(0);
+			this.BackGroundMusic.setLoop(1);
 			this.BackGroundMusic.volume = 0.1;
 
 			return;

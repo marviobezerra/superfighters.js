@@ -20,13 +20,15 @@ import '../../data/images/May-Select.png';
 
 import '../../data/images/backgrounds/menu.png';
 import '../../data/images/backgrounds/Player-Select.jpg';
+import '../../data/images/backgrounds/controls.jpg';
 
 import '../../data/sounds/Bg_01.mp3';
 import '../../data/sounds/Iori_40-1.mp3';
 
 export enum GameAssets {
 	Menu = 'Game-Menu',
-	PlayerSelect = 'Player-Select'
+	PlayerSelect = 'Player-Select',
+	Controls = 'Controls'
 }
 
 export enum PlayerSelect {
@@ -68,6 +70,7 @@ export class AssetsManager {
 
 				{ "id": GameAssets.Menu, "src": "/data/images/backgrounds/menu.png" },
 				{ "id": GameAssets.PlayerSelect, "src": "/data/images/backgrounds/Player-Select.jpg" },
+				{ "id": GameAssets.Controls, "src": "/data/images/backgrounds/controls.jpg" },
 
 				{ "id": PlayerFight.May, "src": "/data/images/Mai/mai-data.json" },
 				{ "id": PlayerFight.Leona, "src": "/data/images/Leona/leona-data.json" },

@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "clean": "del-cli wwwroot/* src/**/*.js src/**/*.js.map",
-        "start": "npm run clean && webpack-dev-server --watch --color --hot --open --env dev"
+        "start": "npm run clean && webpack-dev-server --watch --open --env dev"
     },
     "repository": {
         "type": "git",

@@ -107,6 +107,12 @@ export class GameFight extends SceneBase {
 			if (this.Playing) {
 				this.Timer--;
 				this.CreateTimerText();
+
+				if (this.Timer <= 0) {
+					this.Manager.Load(SceneType.GameOver);
+					return;
+				}
+
 				this.TimerLoop();
 			}
 		}, 1000);
@@ -185,19 +191,21 @@ export class GameFight extends SceneBase {
 		if (this.PlayerTwo) {
 			this.removeChild(this.PlayerTwo);
 			this.removeChild(this.PlayerTwoPowerBar);
+			this.removeChild(this.PlayerTwoText);
+			
 		}
 
 		this.BuildOponentList();
 		this.Oponent = this.GetNextOponent();
 
-		this.PlayerOne = new Character(this.Manager.AssetsManager.Load(this.Manager.CurrentCaracter), this.Manager.Canvas, true);
+		this.PlayerOne = new Character(this.Manager.AssetsManager.Load(this.Manager.CurrentCaracter), this.Manager, this, true);
 		this.PlayerOnePowerBar = this.CreatePowerBar(true);
 		this.PlayerOneText = this.CreatePlayerText(true);
 
-		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.Oponent), this.Manager.Canvas, false);
+		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.Oponent), this.Manager, this, false);
 		this.PlayerTwoPowerBar = this.CreatePowerBar(false);
 		this.PlayerTwoText = this.CreatePlayerText(false);
-		
+
 
 		this.addChild(this.PlayerOne, this.PlayerOnePowerBar, this.PlayerOneText, this.PlayerTwo, this.PlayerTwoPowerBar, this.PlayerTwoText);
 
@@ -216,4 +224,18 @@ export class GameFight extends SceneBase {
 				break;
 		}
 	}
+
+	public PlayerMove() : void {
+		if (this.PlayerOne.Flip && this.PlayerOne.x < this.PlayerTwo.x) {
+			this.PlayerOne.FlipDirection();
+			this.PlayerTwo.FlipDirection();
+		}
+
+		if (!this.PlayerOne.Flip && this.PlayerOne.x > this.PlayerTwo.x) {
+			this.PlayerOne.FlipDirection();
+			this.PlayerTwo.FlipDirection();
+		}
+	}
+
+
 }

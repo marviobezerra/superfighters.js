@@ -22,7 +22,7 @@ export class GameMenu extends SceneBase {
 		super(manager);
 		this.AddBackground();
 		this.AddTextLayer();
-		this.RegisterSounds();
+		//this.RegisterSounds();
 
 		// It is required to avoid scope references
 		this.KeyBoardEvents = this.RegisterEvents.bind(this);
@@ -90,8 +90,9 @@ export class GameMenu extends SceneBase {
 	}
 
 	private LoadHandler(event: createjs.Event): void {
-		if (event.id === 'bg1')
-			this.PlayBackGroundMusic();
+		if (event.id === 'bg1') {
+			//this.PlayBackGroundMusic();
+		}
 	}
 
 	private RegisterEvents(event: KeyboardEvent): void {
@@ -106,9 +107,6 @@ export class GameMenu extends SceneBase {
 			case 'm':
 				this.PlayBackGroundMusic();
 				break;
-			case 'f':
-				this.LaunchIntoFullscreen(document.documentElement);
-				break;
 			case 'Enter':
 				switch (this.CurrentOption) {
 					case Option.Play:
@@ -116,9 +114,9 @@ export class GameMenu extends SceneBase {
 						break;
 					case Option.Controls:
 						this.Manager.Load(SceneType.Controls);
-						break;					
+						break;
 				}
-				
+
 				break;
 		};
 	}
@@ -152,30 +150,5 @@ export class GameMenu extends SceneBase {
 	private PlaySelect(): void {
 		let instance = createjs.Sound.play('select');
 		instance.volume = 0.1;
-	}
-
-	private LaunchIntoFullscreen(element: any): void {
-		if (element.requestFullscreen) {
-			element.requestFullscreen();
-		} else if (element.mozRequestFullScreen) {
-			element.mozRequestFullScreen();
-		} else if (element.webkitRequestFullscreen) {
-			element.webkitRequestFullscreen();
-		} else if (element.msRequestFullscreen) {
-			element.msRequestFullscreen();
-		}
-	}
-
-	private ExitFullscreen(): void {
-
-		let element: any = document;
-
-		if (element.exitFullscreen) {
-			element.exitFullscreen();
-		} else if (element.mozCancelFullScreen) {
-			element.mozCancelFullScreen();
-		} else if (element.webkitExitFullscreen) {
-			element.webkitExitFullscreen();
-		}
 	}
 }

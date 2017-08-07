@@ -10,19 +10,25 @@ export class GameFight extends SceneBase {
 	private OponentList: Array<PlayerFight>;
 	private TimerBox: createjs.Shape;
 	private TimerText: createjs.Text;
+	private Timer: number;
+	private Playing = false;
+	private Oponent: PlayerFight;
 
 	private PlayerOne: Character;
 	private PlayerTwo: Character;
 
-	private PlayerOnePower: createjs.Shape;
-	private PlayerTwoPower: createjs.Shape;
+	private PlayerOneText: createjs.Text;
+	private PlayerTwoText: createjs.Text;
+
+	private PlayerOnePowerBar: createjs.Shape;
+	private PlayerTwoPowerBar: createjs.Shape;
 
 	constructor(manager: IManager) {
 		super(manager);
 
 		// It is required to avoid scope references
 		this.AddBackground();
-		this.CreateTimer();
+		this.CreateTimerBorder();
 		this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
 	}
 
@@ -72,7 +78,41 @@ export class GameFight extends SceneBase {
 		this.PlayerTwo.Stop();
 	}
 
-	private CreateTimer(): void {
+	private CreateTimerText(): void {
+
+		if (this.TimerText) {
+			this.removeChild(this.TimerText);
+		}
+
+		let timerText = new createjs.Text(this.Timer.toString(), "70px Haettenschweiler", "#FFF");
+		timerText.x = this.TimerBox.x + 25 + (timerText.getBounds().width / 2);
+
+		let b = this.TimerBox.getBounds();
+
+		timerText.set({
+			textAlign: "center",
+			textBaseline: "middle",
+			x: (b.width / 2) + b.x,
+			y: (b.height / 2) + b.y - 3
+		})
+
+
+		this.TimerText = timerText;
+		this.addChild(this.TimerText);
+	}
+
+	private TimerLoop(): void {
+
+		setTimeout(() => {
+			if (this.Playing) {
+				this.Timer--;
+				this.CreateTimerText();
+				this.TimerLoop();
+			}
+		}, 1000);
+	}
+
+	private CreateTimerBorder(): void {
 		let border = new createjs.Shape();
 		let command = border.graphics
 			.beginStroke("#000")
@@ -85,17 +125,14 @@ export class GameFight extends SceneBase {
 		border.alpha = 0.8;
 		border.snapToPixel = true;
 		border.graphics.drawRect(0, 0, size, 80);
+		border.setBounds((this.Manager.Canvas.width - size) / 2, 20, size, 80);
 		border.x = (this.Manager.Canvas.width - size) / 2;
 		border.y = 20;
 
-		border.graphics.command = command;		
+		border.graphics.command = command;
 		this.TimerBox = border;
 
-		let timer = new createjs.Text("90", "100px Haettenschweiler", "#FFF");
-		timer.x = border.x + (timer.getBounds().width / 2);
-		timer.y = 3;
-
-		this.addChild(this.TimerBox, timer);
+		this.addChild(this.TimerBox);
 	}
 
 	private CreatePowerBar(playerOne: boolean): createjs.Shape {
@@ -113,37 +150,63 @@ export class GameFight extends SceneBase {
 		border.alpha = 0.8;
 		border.snapToPixel = true;
 		border.graphics.drawRect(0, 0, size, 40);
+		border.setBounds(0, 0, size, 40);
 		border.x = playerOne ? 20 : timerSize + size - 20;
 		border.y = 20;
 
-		border.graphics.command = command;
-
 		return border;
+	}
+
+	private CreatePlayerText(playerOne: boolean): createjs.Text {
+
+		let text = playerOne
+			? this.Manager.CurrentCaracter.toString()
+			: this.Oponent.toString();
+
+		text = text.replace("-Fight", "");
+		let result = new createjs.Text(text, "20px Haettenschweiler", "#FFF");
+
+		result.x = playerOne
+			? this.PlayerOnePowerBar.x + 15
+			: this.PlayerTwoPowerBar.x + this.PlayerTwoPowerBar.getBounds().width - result.getBounds().width - 15;
+
+		result.y = 65;
+
+		return result;
 	}
 
 	private Start(): void {
 		if (this.PlayerOne) {
 			this.removeChild(this.PlayerOne);
-			this.removeChild(this.PlayerOnePower);
+			this.removeChild(this.PlayerOnePowerBar);
+			this.removeChild(this.PlayerOneText);
 		}
 
 		if (this.PlayerTwo) {
 			this.removeChild(this.PlayerTwo);
-			this.removeChild(this.PlayerTwoPower);
+			this.removeChild(this.PlayerTwoPowerBar);
 		}
 
 		this.BuildOponentList();
+		this.Oponent = this.GetNextOponent();
 
 		this.PlayerOne = new Character(this.Manager.AssetsManager.Load(this.Manager.CurrentCaracter), this.Manager.Canvas, true);
-		this.PlayerOnePower = this.CreatePowerBar(true);
+		this.PlayerOnePowerBar = this.CreatePowerBar(true);
+		this.PlayerOneText = this.CreatePlayerText(true);
 
-		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.GetNextOponent()), this.Manager.Canvas, false);
-		this.PlayerTwoPower = this.CreatePowerBar(false);
+		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.Oponent), this.Manager.Canvas, false);
+		this.PlayerTwoPowerBar = this.CreatePowerBar(false);
+		this.PlayerTwoText = this.CreatePlayerText(false);
+		
 
-		this.addChild(this.PlayerOne, this.PlayerOnePower, this.PlayerTwo, this.PlayerTwoPower);
+		this.addChild(this.PlayerOne, this.PlayerOnePowerBar, this.PlayerOneText, this.PlayerTwo, this.PlayerTwoPowerBar, this.PlayerTwoText);
 
 		this.PlayerOne.Start();
 		this.PlayerTwo.Start();
+
+		this.Timer = 91;
+		this.Playing = true;
+		this.TimerLoop();
 	}
 
 	private RegisterKeyDownEvents(event: KeyboardEvent): void {

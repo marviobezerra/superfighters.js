@@ -29,7 +29,9 @@ export class SceneManager implements IManager {
 	public CurrentCaracter = PlayerFight.Kyo;
 
 	constructor(private Stage: createjs.Stage, public AssetsManager: AssetsManager, public Canvas: HTMLCanvasElement) {
-		this.Load(SceneType.Menu);
+		this.CurrentCaracter = PlayerFight.Leona;
+		this.Load(SceneType.Fight);
+		//this.Load(SceneType.Menu);
 	}
 
 	public Load(sceneType: SceneType): void {

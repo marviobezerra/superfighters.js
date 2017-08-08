@@ -46,8 +46,8 @@ export class GameFight extends SceneBase {
 		this.Stop();
 	}
 
-	private Tick(){
-		AiManager.AiCheck(this.PlayerOne, this.PlayerTwo);
+	private Tick(){		
+		AiManager.AiCheck(this.PlayerOne, this.PlayerTwo, createjs.Ticker.getTicks());
 	}
 
 	private AddBackground(): void {

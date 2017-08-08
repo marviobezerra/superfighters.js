@@ -30,6 +30,7 @@ export class Character extends createjs.Sprite {
 		super(new createjs.SpriteSheet(data), "stand");
 
 		this.Ground = manager.Canvas.height * 0.85;
+		this.PlayingAnimation = Animations.Stand;
 
 		if (playerOne) {
 			this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
@@ -38,15 +39,43 @@ export class Character extends createjs.Sprite {
 
 	}
 
-	public Move(direction: Directions, force: number) {
-		switch (direction) {
-			case Directions.Right:
-				this.x += force;
-				break;
-			case Directions.Left:
-				this.x -= force;
-			default:
-				break;
+	public MoveForward(direction: Directions, force: number) {		
+		if (this.PlayingAnimation === Animations.Stand) {
+			switch (direction) {
+				case Directions.Right:
+					this.x += force;
+					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
+					this.gotoAndPlay(Animations.Walking);
+					this.PlayingAnimation = Animations.Walking;
+					break;
+				case Directions.Left:
+					this.x -= force;
+					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
+					this.gotoAndPlay(Animations.Walking);
+					this.PlayingAnimation = Animations.Walking;
+				default:
+					break;
+			}
+		}
+	}
+
+	public MoveBackWards(direction: Directions, force: number) {
+		if (this.PlayingAnimation === Animations.Stand) {
+			switch (direction) {
+				case Directions.Right:
+					this.x += force;
+					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
+					this.gotoAndPlay(Animations.WalkingBackwards);
+					this.PlayingAnimation = Animations.WalkingBackwards;
+					break;
+				case Directions.Left:
+					this.x -= force;
+					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
+					this.gotoAndPlay(Animations.WalkingBackwards);
+					this.PlayingAnimation = Animations.WalkingBackwards;
+				default:
+					break;
+			}
 		}
 	}
 

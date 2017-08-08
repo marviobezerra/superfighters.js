@@ -2,6 +2,7 @@ import { SceneBase } from './SceneBase';
 import { AssetsManager, GameAssets, PlayerFight } from '../assets/assets-manager';
 import { IManager, SceneType } from './SceneManager';
 import { Character } from '../characters/Character';
+import { AiManager } from '../ai/AiManager';
 
 export class GameFight extends SceneBase {
 
@@ -30,6 +31,9 @@ export class GameFight extends SceneBase {
 		this.AddBackground();
 		this.CreateTimerBorder();
 		this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
+
+		createjs.Ticker.addEventListener("tick", this.Tick.bind(this));
+
 	}
 
 	public Register(): void {
@@ -40,6 +44,10 @@ export class GameFight extends SceneBase {
 	public UnRegister(): void {
 		document.removeEventListener('keydown', this.KeyDownEvents, false);
 		this.Stop();
+	}
+
+	private Tick(){
+		AiManager.AiCheck(this.PlayerOne, this.PlayerTwo);
 	}
 
 	private AddBackground(): void {

@@ -1,4 +1,4 @@
-import { Character } from '../characters/Character';
+import { Character, Animations, Directions } from '../characters/Character';
 import { SceneBase } from '../scenes/SceneBase';
 export class AiManager{
 
@@ -18,33 +18,30 @@ export class AiManager{
 
 	static move(player:Character, enemy:Character, isLeft:boolean){
 		if (this.checkProximity(player.x, enemy.x)){
-			this.punching = true; //better defined by a bubble event from CharacterClass... check it later.
-			this.hit(enemy);			
-			this.punching = false;
+			enemy.Punch();
+			
 		} else {
-			if (isLeft){
-				enemy.x --;
-				console.log('Move left called')
+			
+			if (isLeft){			
+				enemy.Move(Directions.Left, 1);			
 			}
 			else {
-				console.log('Move right called')
-				enemy.x ++;
+				enemy.Move(Directions.Right, 1);				
 			}
 		}
 	}
 
-	static hit(enemy:Character){
-		console.log('Hit called');
-		enemy.gotoAndPlay('punch');
-		
+	static hit(enemy:Character){		
+		enemy.Punch();
 	}
 
 	static checkProximity(pX:number, eX: number){
-		console.log('Player Position: ', pX, ' Opponent Position: ', eX);
 		
-		if (Math.abs(pX-eX) < this.proximityRange) { 
-			return true; }
-		return false;
+		if (Math.abs(pX-eX) < this.proximityRange) { 			
+			return true; 
+		} else { 			
+			return false;
+		}
 	}
 }
 

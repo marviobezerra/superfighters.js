@@ -12,6 +12,11 @@ export enum Animations {
 	Stand = "stand"
 }
 
+export enum Directions {
+	Right = 0,
+	Left = 1
+}
+
 export class Character extends createjs.Sprite {
 
 	private Ground = 450;
@@ -31,6 +36,26 @@ export class Character extends createjs.Sprite {
 			this.KeyUpEvents = this.RegisterKeyUpEvents.bind(this);
 		}
 
+	}
+
+	public Move(direction: Directions, force: number) {
+		switch (direction) {
+			case Directions.Right:
+				this.x += force;
+				break;
+			case Directions.Left:
+				this.x -= force;
+			default:
+				break;
+		}
+	}
+
+	public Punch() {
+		if (this.PlayingAnimation !== Animations.Punch) {
+			this.addEventListener("animationend", this.AfterPunch.bind(this), false);
+			this.gotoAndPlay(Animations.Punch);
+			this.PlayingAnimation = Animations.Punch;
+		}
 	}
 
 	public Start(): void {
@@ -114,7 +139,7 @@ export class Character extends createjs.Sprite {
 		this.fight.addChild(this.HitBorder);
 	}
 
-	private AfterPunch(e: any) {
+	public AfterPunch(e: any) {
 		this.removeEventListener("animationend", this.AfterPunch.bind(this), false);
 		this.gotoAndPlay(Animations.Stand);
 		this.PlayingAnimation = Animations.Stand;

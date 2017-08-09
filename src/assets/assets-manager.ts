@@ -1,17 +1,17 @@
 import { Action, Action01 } from '../common/util';
 
-import '../../data/images/Mai/mai-data.json';
-import '../../data/images/Mai/mai-image.png';
+// import '../../data/images/Mai/mai-data.json';
+// import '../../data/images/Mai/mai-image.png';
 
-import '../../data/images/Leona/leona-data.json';
-import '../../data/images/Leona/leona-image.png';
+// import '../../data/images/Leona/leona-data.json';
+// import '../../data/images/Leona/leona-image.png';
 
-import '../../data/images/Kyo/kyo-data.json';
-import '../../data/images/Kyo/kyo-image-01.png';
-import '../../data/images/Kyo/kyo-image-02.png';
+// import '../../data/images/Kyo/kyo-data.json';
+// import '../../data/images/Kyo/kyo-image-01.png';
+// import '../../data/images/Kyo/kyo-image-02.png';
 
-import '../../data/images/Iori/iori-data.json';
-import '../../data/images/Iori/iori-image.png';
+// import '../../data/images/Iori/iori-data.json';
+// import '../../data/images/Iori/iori-image.png';
 
 import '../../data/images/Iori-Select.png';
 import '../../data/images/Kyo-Select.png';
@@ -21,6 +21,24 @@ import '../../data/images/May-Select.png';
 import '../../data/images/backgrounds/menu.png';
 import '../../data/images/backgrounds/Player-Select.jpg';
 import '../../data/images/backgrounds/controls.jpg';
+
+
+import '../../data/spritesheets/Anoel-0.png';
+import '../../data/spritesheets/Anoel-1.png';
+import '../../data/spritesheets/Anoel.json';
+
+import '../../data/spritesheets/Iam-0.png';
+import '../../data/spritesheets/Iam-1.png';
+import '../../data/spritesheets/Iam.json';
+
+import '../../data/spritesheets/Iroi-0.png';
+import '../../data/spritesheets/Iroi-1.png';
+import '../../data/spritesheets/Iroi.json';
+
+import '../../data/spritesheets/oyk-0.png';
+import '../../data/spritesheets/oyk-1.png';
+import '../../data/spritesheets/oyk-2.png';
+import '../../data/spritesheets/oyk.json';
 
 import '../../data/sounds/Bg_01.mp3';
 import '../../data/sounds/Iori_40-1.mp3';
@@ -72,10 +90,12 @@ export class AssetsManager {
 				{ "id": GameAssets.PlayerSelect, "src": "/data/images/backgrounds/Player-Select.jpg" },
 				{ "id": GameAssets.Controls, "src": "/data/images/backgrounds/controls.jpg" },
 
-				{ "id": PlayerFight.May, "src": "/data/images/Mai/mai-data.json" },
-				{ "id": PlayerFight.Leona, "src": "/data/images/Leona/leona-data.json" },
-				{ "id": PlayerFight.Kyo, "src": "/data/images/Kyo/kyo-data.json" },
-				{ "id": PlayerFight.Yory, "src": "/data/images/Iori/iori-data.json" },
+
+				
+				{ "id": PlayerFight.May, "src": "/data/spritesheets/Iam.json" },
+				{ "id": PlayerFight.Leona, "src": "/data/spritesheets/Anoel.json" },
+				{ "id": PlayerFight.Kyo, "src": "/data/spritesheets/oyk.json" },
+				{ "id": PlayerFight.Yory, "src": "/data/spritesheets/Iroi.json" },
 			]
 		};
 	};

@@ -3,10 +3,10 @@ import { IManager } from '../scenes/SceneManager';
 import { GameFight } from '../scenes/GameFight';
 
 export enum Animations {
-	Punch = "punch",
-	Jump = "jump",
-	Walking = "walking",
-	Win = "win",
+	Punch = "punch",	
+	Jump = "jump_1",
+	Walking = "walking_forward",
+	Win = "taunt",
 	WalkingBackwards = "walking_backwards",
 	Die = "die",
 	Stand = "stand"

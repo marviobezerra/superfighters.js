@@ -6,13 +6,15 @@ import { GamePlayerSelect } from './GamePlayerSelect';
 import { GameOver } from './GameOver';
 import { GameFight } from './GameFight';
 import { Map } from '../common/util';
+import { Splash } from "./Splash";
 
 export enum SceneType {
 	Menu,
 	Controls,
 	PlayerSelect,
 	Fight,
-	GameOver
+	GameOver,
+	Splash
 }
 
 export interface IManager {
@@ -32,6 +34,7 @@ export class SceneManager implements IManager {
 		this.CurrentCaracter = PlayerFight.Yory;
 		//this.Load(SceneType.Fight);
 		this.Load(SceneType.Menu);
+		// this.Load(SceneType.Splash); // Not working for know. 
 	}
 
 	public Load(sceneType: SceneType): void {
@@ -61,6 +64,8 @@ export class SceneManager implements IManager {
 				return new GameFight(this);
 			case SceneType.GameOver:
 				return new GameOver(this);
+			case SceneType.Splash:
+				return new Splash(this);
 		}
 	}
 }

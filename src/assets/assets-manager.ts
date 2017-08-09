@@ -8,6 +8,7 @@ import '../../data/images/May-Select.png';
 import '../../data/images/backgrounds/menu.png';
 import '../../data/images/backgrounds/Player-Select.jpg';
 import '../../data/images/backgrounds/controls.jpg';
+import '../../data/images/backgrounds/splash.png';
 
 
 import '../../data/spritesheets/Anoel-0.png';
@@ -37,7 +38,8 @@ import '../../data/sounds/common/Selecting_Sound_Effect.mp3';
 export enum GameAssets {
 	Menu = 'Game-Menu',
 	PlayerSelect = 'Player-Select',
-	Controls = 'Controls'
+	Controls = 'Controls',
+	Splash = 'Splash'
 }
 
 export enum PlayerSelect {
@@ -87,6 +89,7 @@ export class AssetsManager {
 				{ "id": GameAssets.Menu, "src": "/data/images/backgrounds/menu.png" },
 				{ "id": GameAssets.PlayerSelect, "src": "/data/images/backgrounds/Player-Select.jpg" },
 				{ "id": GameAssets.Controls, "src": "/data/images/backgrounds/controls.jpg" },
+				{ "id": GameAssets.Splash, "src": "/data/images/backgrounds/splash.png" },
 
 
 				

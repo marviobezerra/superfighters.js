@@ -27,6 +27,9 @@ export class AiManager {
 				break;
 			case AiState.Idle:
 				break;
+			case AiState.Taunt:
+				enemy.gotoAndPlay('taunt');
+				break;
 			case AiState.Retreat:
 
 				if (player.x < enemy.x) {
@@ -89,6 +92,7 @@ export enum AiState {
 	GoTo,
 	Retreat,
 	Idle,
+	Taunt,
 	//JumpTo - To be added
 	//JumpBack - To be added
 }

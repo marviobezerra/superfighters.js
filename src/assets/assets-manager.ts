@@ -1,18 +1,5 @@
 import { Action, Action01 } from '../common/util';
 
-// import '../../data/images/Mai/mai-data.json';
-// import '../../data/images/Mai/mai-image.png';
-
-// import '../../data/images/Leona/leona-data.json';
-// import '../../data/images/Leona/leona-image.png';
-
-// import '../../data/images/Kyo/kyo-data.json';
-// import '../../data/images/Kyo/kyo-image-01.png';
-// import '../../data/images/Kyo/kyo-image-02.png';
-
-// import '../../data/images/Iori/iori-data.json';
-// import '../../data/images/Iori/iori-image.png';
-
 import '../../data/images/Iori-Select.png';
 import '../../data/images/Kyo-Select.png';
 import '../../data/images/Leona-Select.png';
@@ -42,6 +29,10 @@ import '../../data/spritesheets/oyk.json';
 
 import '../../data/sounds/Bg_01.mp3';
 import '../../data/sounds/Iori_40-1.mp3';
+import '../../data/sounds/common/Choose_Sound_Effect.mp3';
+import '../../data/sounds/common/Coin_Effect.mp3';
+import '../../data/sounds/common/Selecting_Sound_Effect.mp3';
+
 
 export enum GameAssets {
 	Menu = 'Game-Menu',
@@ -63,6 +54,12 @@ export enum PlayerFight {
 	Yory = 'Yory-Fight'
 }
 
+export enum Sounds {
+	Choose = 'choose',
+	Select = 'select',
+	Coin = 'coin'
+}
+
 export class AssetsManager {
 
 	private Queue: createjs.LoadQueue;
@@ -70,6 +67,7 @@ export class AssetsManager {
 	constructor(onComplete: Action, onProgress: Action01<number>, onError: Action01<any>) {
 		console.log(PlayerFight.Kyo);
 		this.Queue = new createjs.LoadQueue(true);
+		this.Queue.installPlugin(createjs.Sound);
 
 		this.Queue.on("complete", onComplete);
 		this.Queue.on("progress", onProgress);
@@ -96,11 +94,17 @@ export class AssetsManager {
 				{ "id": PlayerFight.Leona, "src": "/data/spritesheets/Anoel.json" },
 				{ "id": PlayerFight.Kyo, "src": "/data/spritesheets/oyk.json" },
 				{ "id": PlayerFight.Yory, "src": "/data/spritesheets/Iroi.json" },
+
+
+				{ "id": Sounds.Choose, "src": "/data/sounds/common/Choose_Sound_Effect.mp3"},
+				{ "id": Sounds.Coin, "src":   "/data/sounds/common/Coin_Effect.mp3"},
+				{ "id": Sounds.Select, "src": "/data/sounds/common/Selecting_Sound_Effect.mp3"},
+				
 			]
 		};
 	};
 
-	public Load(asset: GameAssets | PlayerFight | PlayerSelect): any {
+	public Load(asset: GameAssets | PlayerFight | PlayerSelect | Sounds): any {
 		return this.Queue.getResult(asset);
 	}
 

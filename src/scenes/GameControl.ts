@@ -47,7 +47,7 @@ export class GameControl extends SceneBase {
 		createjs.Sound.addEventListener('fileload', this.LoadHandler.bind(this));
 		createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
 		createjs.Sound.alternateExtensions = ["mp3"];		
-		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/Iori_40-1.mp3" });
+		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/common/Coin_Effect.mp3" });
 	}
 
 	private LoadHandler(event: createjs.Event): void {

@@ -1,4 +1,4 @@
-import { AssetsManager, GameAssets } from '../assets/assets-manager';
+import { AssetsManager, GameAssets, Sounds } from '../assets/assets-manager';
 import { SceneBase } from './SceneBase';
 import { IManager, SceneType } from './SceneManager';
 
@@ -22,7 +22,7 @@ export class GameMenu extends SceneBase {
 		super(manager);
 		this.AddBackground();
 		this.AddTextLayer();
-		//this.RegisterSounds();
+		this.RegisterSounds();
 
 		// It is required to avoid scope references
 		this.KeyBoardEvents = this.RegisterEvents.bind(this);
@@ -84,9 +84,11 @@ export class GameMenu extends SceneBase {
 
 		createjs.Sound.addEventListener('fileload', this.LoadHandler.bind(this));
 		createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
-		createjs.Sound.alternateExtensions = ["mp3"];
+		createjs.Sound.alternateExtensions = ["mp3"];		
 		createjs.Sound.registerSound({ id: "bg1", src: "/data/sounds/Bg_01.mp3" });
-		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/Iori_40-1.mp3" });
+		createjs.Sound.registerSound({ id: "choose", src: "/data/sounds/common/Choose_Sound_Effect.mp3" });
+		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/common/Selecting_Sound_Effect.mp3" });
+		createjs.Sound.registerSound({id: "coin", src: "/data/sounds/common/Coin_Effect.mp3"});
 	}
 
 	private LoadHandler(event: createjs.Event): void {
@@ -108,6 +110,7 @@ export class GameMenu extends SceneBase {
 				this.PlayBackGroundMusic();
 				break;
 			case 'Enter':
+				this.PlayChoose();
 				switch (this.CurrentOption) {
 					case Option.Play:
 						this.Manager.Load(SceneType.PlayerSelect);
@@ -147,8 +150,13 @@ export class GameMenu extends SceneBase {
 		this.BackGroundMusic.paused = !this.BackGroundMusic.paused;
 	}
 
-	private PlaySelect(): void {
+	private PlaySelect(): void {		
 		let instance = createjs.Sound.play('select');
-		instance.volume = 0.1;
+		// instance.volume = 0.1;
+	}
+
+	private PlayChoose():void{		
+		let instance = createjs.Sound.play('coin');
+		// instance.volume = 0.1;
 	}
 }

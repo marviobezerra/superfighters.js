@@ -23,7 +23,9 @@ export class GamePlayerSelect extends SceneBase {
 		// It is required to avoid scope references
 		this.AddBackground();
 		this.KeyBoardEvents = this.RegisterEvents.bind(this);
+		this.RegisterSounds();
 		this.Start();
+
 	}
 
 	private Start(): void {
@@ -45,6 +47,11 @@ export class GamePlayerSelect extends SceneBase {
 
 	public UnRegister(): void {
 		document.removeEventListener('keydown', this.KeyBoardEvents, false);
+	}
+
+	private RegisterSounds(){
+		createjs.Sound.registerSound({ id: "choose", src: "/data/sounds/common/Choose_Sound_Effect.mp3" });
+		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/common/Selecting_Sound_Effect.mp3" });
 	}
 
 	private AddBackground(): void {
@@ -104,12 +111,15 @@ export class GamePlayerSelect extends SceneBase {
 				this.Manager.Load(SceneType.Menu);
 				break;
 			case 'ArrowLeft':
+				this.PlaySelect();
 				this.UpdateSelectedCaracter(false);
 				break;
 			case 'ArrowRight':
+				this.PlaySelect();
 				this.UpdateSelectedCaracter(true);
 				break;
 			case 'Enter':
+				this.PlayChoose();
 				this.Manager.Load(SceneType.Fight);
 		}
 	}
@@ -134,5 +144,15 @@ export class GamePlayerSelect extends SceneBase {
 		let index = this.CaracteresList[this.CaracterIndex];
 		(<any>this.Caracteres[index].Border.graphics.command).style = "#7a2929";
 		this.Manager.CurrentCaracter = this.Manager.AssetsManager.ConvertToPlayerFight(this.CaracteresList[this.CaracterIndex]);
+	}
+
+	private PlaySelect(): void {		
+		let instance = createjs.Sound.play('select');
+		// instance.volume = 0.1;
+	}
+
+	private PlayChoose():void{		
+		let instance = createjs.Sound.play('choose');
+		// instance.volume = 0.1;
 	}
 }

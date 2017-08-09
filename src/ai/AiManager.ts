@@ -7,17 +7,14 @@ export class AiManager {
 	static aiBehaviorChangeInterval: number = 50; //Level of dificulty
 
 	static AiCheck(player: Character, enemy: Character, ticks: number) {
-
-		console.log(ticks);
-
 		if (ticks % this.aiBehaviorChangeInterval === Math.floor((Math.random() * 10))) {
 			this.changeBehavior(player, enemy);
 		}
 	}
 
 	static changeBehavior(player: Character, enemy: Character) {
-		let aiState: AiState = Math.floor((Math.random() * Object.keys(AiState).length));
-		console.log(aiState);
+		let aiState: AiState = Math.floor((Math.random() * (Object.keys(AiState).length/2)));		
+		console.log( "Changed behavior to: ",  aiState);
 		switch (aiState) {
 			case AiState.GoTo:
 				if (player.x < enemy.x) {

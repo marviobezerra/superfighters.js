@@ -5,9 +5,9 @@ import { GameFight } from '../scenes/GameFight';
 export enum Animations {
 	Punch = "punch",	
 	Jump = "jump_1",
-	Walking = "walking_forward",
+	Walking = "walk_forward",
 	Win = "taunt",
-	WalkingBackwards = "walking_backwards",
+	WalkingBackwards = "walk_backwards",
 	Die = "die",
 	Stand = "stand"
 }

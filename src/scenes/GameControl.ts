@@ -5,16 +5,18 @@ import { IManager, SceneType } from './SceneManager';
 export class GameControl extends SceneBase {
 
 	private BackGroundImage: createjs.Bitmap;
-	private KeyBoardEvents: any;
+	private KeyDownEvents: any;
 	private WindowsEvents: any;
-	
-	constructor(manager:IManager) {
-		super(manager);
 
+	constructor(manager: IManager) {
+		super(manager);
 
 		this.AddBackground();
 		this.AddTextLayer();
 		this.RegisterSounds();
+
+		this.KeyDownEvents = this.RegisterEvents.bind(this);
+
 	}
 
 	private RegisterEvents(event: KeyboardEvent): void {
@@ -27,7 +29,7 @@ export class GameControl extends SceneBase {
 		this.AdjustBackgroundSize();
 	}
 
-	private AddTextLayer(){
+	private AddTextLayer() {
 		let title = new createjs.Text('Press any key to go back to menu', "100px Haettenschweiler", "#FFF");
 		this.addChild(title);
 		title.alpha = 0;
@@ -46,12 +48,12 @@ export class GameControl extends SceneBase {
 
 		createjs.Sound.addEventListener('fileload', this.LoadHandler.bind(this));
 		createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
-		createjs.Sound.alternateExtensions = ["mp3"];		
+		createjs.Sound.alternateExtensions = ["mp3"];
 		createjs.Sound.registerSound({ id: "select", src: "/data/sounds/common/Coin_Effect.mp3" });
 	}
 
 	private LoadHandler(event: createjs.Event): void {
-		
+
 	}
 
 	private AdjustBackgroundSize(): void {
@@ -60,43 +62,17 @@ export class GameControl extends SceneBase {
 	}
 
 	public Register(): void {
-		document.addEventListener('keydown', this.KeyBoardEvents, false);
-		window.addEventListener('onresize', this.WindowsEvents, false);
+		document.addEventListener('keydown', this.KeyDownEvents, false);
+
 		this.AdjustBackgroundSize();
 	}
 
 	public UnRegister(): void {
-		document.removeEventListener('keydown', this.KeyBoardEvents, false);
-		window.removeEventListener('onresize', this.WindowsEvents, false);
+		document.removeEventListener('keydown', this.KeyDownEvents, false);
 	}
 
 	private PlaySelect(): void {
 		let instance = createjs.Sound.play('select');
 		instance.volume = 0.1;
-	}
-
-	private LaunchIntoFullscreen(element: any): void {
-		if (element.requestFullscreen) {
-			element.requestFullscreen();
-		} else if (element.mozRequestFullScreen) {
-			element.mozRequestFullScreen();
-		} else if (element.webkitRequestFullscreen) {
-			element.webkitRequestFullscreen();
-		} else if (element.msRequestFullscreen) {
-			element.msRequestFullscreen();
-		}
-	}
-
-	private ExitFullscreen(): void {
-
-		let element: any = document;
-
-		if (element.exitFullscreen) {
-			element.exitFullscreen();
-		} else if (element.mozCancelFullScreen) {
-			element.mozCancelFullScreen();
-		} else if (element.webkitExitFullscreen) {
-			element.webkitExitFullscreen();
-		}
 	}
 }

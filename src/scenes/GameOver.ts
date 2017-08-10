@@ -37,8 +37,6 @@ export class GameOver extends SceneBase {
 		createjs.Sound.play('game_over');
 	}
 
-
-
 	private AddBackground(): void {
 		this.BackGroundImage = new createjs.Bitmap(this.Manager.AssetsManager.Load(GameAssets.PlayerSelect));
 		this.addChild(this.BackGroundImage);
@@ -56,6 +54,7 @@ export class GameOver extends SceneBase {
 	}
 
 	public UnRegister(): void {
+		document.removeEventListener('keydown', this.KeyDownEvents, false);
 
 	}
 

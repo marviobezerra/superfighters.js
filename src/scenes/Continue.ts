@@ -4,8 +4,8 @@ import { IManager, SceneType } from './SceneManager';
 
 export class Continue extends SceneBase {
 
-
-	private current = 9;
+	private CountingDown = false;
+	private Current = 9;
 	private KeyDownEvents: any;
 	private BackGroundImage: createjs.Bitmap;
 
@@ -21,19 +21,19 @@ export class Continue extends SceneBase {
 	registerSounds() {
 		// createjs.Sound.addEventListener('fileload', this.LoadHandler.bind(this));
 
-		createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
-		createjs.Sound.alternateExtensions = ["mp3"];
+		// createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
+		// createjs.Sound.alternateExtensions = ["mp3"];
 
-		createjs.Sound.registerSound({ id: "9", src: "/data/sounds/common/nine.mp3" });
-		createjs.Sound.registerSound({ id: "8", src: "/data/sounds/common/eight.mp3" });
-		createjs.Sound.registerSound({ id: "7", src: "/data/sounds/common/seven.mp3" });
-		createjs.Sound.registerSound({ id: "6", src: "/data/sounds/common/six.mp3" });
-		createjs.Sound.registerSound({ id: "5", src: "/data/sounds/common/five.mp3" });
-		createjs.Sound.registerSound({ id: "4", src: "/data/sounds/common/four.mp3" });
-		createjs.Sound.registerSound({ id: "3", src: "/data/sounds/common/three.mp3" });
-		createjs.Sound.registerSound({ id: "2", src: "/data/sounds/common/two.mp3" });
-		createjs.Sound.registerSound({ id: "1", src: "/data/sounds/common/one.mp3" });
-		createjs.Sound.registerSound({ id: "continue", src: "/data/sounds/common/new_challenger.mp3" });
+		// createjs.Sound.registerSound({ id: "9", src: "/data/sounds/common/nine.mp3" });
+		// createjs.Sound.registerSound({ id: "8", src: "/data/sounds/common/eight.mp3" });
+		// createjs.Sound.registerSound({ id: "7", src: "/data/sounds/common/seven.mp3" });
+		// createjs.Sound.registerSound({ id: "6", src: "/data/sounds/common/six.mp3" });
+		// createjs.Sound.registerSound({ id: "5", src: "/data/sounds/common/five.mp3" });
+		// createjs.Sound.registerSound({ id: "4", src: "/data/sounds/common/four.mp3" });
+		// createjs.Sound.registerSound({ id: "3", src: "/data/sounds/common/three.mp3" });
+		// createjs.Sound.registerSound({ id: "2", src: "/data/sounds/common/two.mp3" });
+		// createjs.Sound.registerSound({ id: "1", src: "/data/sounds/common/one.mp3" });
+		// createjs.Sound.registerSound({ id: "continue", src: "/data/sounds/common/new_challenger.mp3" });
 
 
 	}
@@ -58,25 +58,32 @@ export class Continue extends SceneBase {
 		createjs.Tween.get(number)
 			.to({ scaleY: -2 })
 			.to({ scaleX: 3, scaleY: 3 }, 200)
-			.call(this.sfx.bind(this))
+			.call(() => this.sfx())
 			.wait(600)
 			.to({ scaleX: 1, scaleY: 1 }, 200)
 			.to({ visible: false })
-			.call(this.callback.bind(this, number));
+			.call((c) => this.callback(number));
 	}
 
 	callback(object: createjs.DisplayObject) {
-		this.Dispose(object);
-		if (this.current !== 1) {
-			this.current -= 1;
-			this.Counting(this.current);
-		} else {
-			this.Manager.Load(SceneType.GameOver);
+
+		this.removeChild(object);
+
+		if (this.CountingDown == false) {
+			return;
 		}
+
+		if (this.Current !== 1) {
+			this.Current -= 1;
+			this.Counting(this.Current);
+			return;
+		}
+
+		this.Manager.Load(SceneType.GameOver);
 	}
 
 	sfx() {
-		createjs.Sound.play(this.current.toString());
+		createjs.Sound.play("Continue" + this.Current.toString());
 	}
 
 	private AddBackground(): void {
@@ -92,12 +99,16 @@ export class Continue extends SceneBase {
 
 
 	public Register(): void {
-		document.addEventListener('keydown', this.KeyDownEvents, false);
 		this.drawTextLayer();
-		this.Counting(this.current);
+		this.Current = 9;
+		this.CountingDown = true;
+		this.Counting(this.Current);
+		document.addEventListener('keydown', this.KeyDownEvents, false);
+
 	}
 
 	public UnRegister(): void {
+		this.CountingDown = false;
 		document.removeEventListener('keydown', this.KeyDownEvents, false);
 	}
 
@@ -105,7 +116,8 @@ export class Continue extends SceneBase {
 		switch (event.key) {
 			case 'Enter':
 				createjs.Sound.play('continue');
-				this.Manager.Load(SceneType.Menu);//start previous gamefight scene;
+				this.CountingDown = false;
+				this.Manager.Load(SceneType.Fight);//start previous gamefight scene;
 				break;
 		}
 	}

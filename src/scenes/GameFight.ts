@@ -7,6 +7,8 @@ import { AiManager } from '../ai/AiManager';
 export class GameFight extends SceneBase {
 
 	private KeyDownEvents: any;
+	private TickEvent: any;
+
 	private BackGroundImage: createjs.Bitmap;
 	private OponentList: Array<PlayerFight>;
 	private TimerBox: createjs.Shape;
@@ -31,18 +33,20 @@ export class GameFight extends SceneBase {
 		this.AddBackground();
 		this.CreateTimerBorder();
 		this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
-
-		createjs.Ticker.addEventListener("tick", this.Tick.bind(this));
-
+		this.TickEvent = this.Tick.bind(this);
 	}
 
 	public Register(): void {
 		document.addEventListener('keydown', this.KeyDownEvents, false);
+		createjs.Ticker.addEventListener("tick", this.TickEvent);
+		
 		this.Start();
 	}
 
 	public UnRegister(): void {
 		document.removeEventListener('keydown', this.KeyDownEvents, false);
+		createjs.Ticker.removeEventListener("tick", this.TickEvent);
+		
 		this.Stop();
 	}
 
@@ -117,7 +121,7 @@ export class GameFight extends SceneBase {
 				this.CreateTimerText();
 
 				if (this.Timer <= 0) {
-					this.Manager.Load(SceneType.GameOver);
+					this.Manager.Load(SceneType.Continue);
 					return;
 				}
 
@@ -220,7 +224,7 @@ export class GameFight extends SceneBase {
 		this.PlayerOne.Start();
 		this.PlayerTwo.Start();
 
-		this.Timer = 91;
+		this.Timer = 10;
 		this.Playing = true;
 		this.TimerLoop();
 	}

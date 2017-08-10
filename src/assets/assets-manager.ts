@@ -71,7 +71,17 @@ export enum PlayerFight {
 export enum Sounds {
 	Choose = 'choose',
 	Select = 'select',
-	Coin = 'coin'
+	Coin = 'coin',
+	Continue = 'Continue',
+	Continue1 = 'Continue1',
+	Continue2 = 'Continue2',
+	Continue3 = 'Continue3',
+	Continue4 = 'Continue4',
+	Continue5 = 'Continue5',
+	Continue6 = 'Continue6',
+	Continue7 = 'Continue7',
+	Continue8 = 'Continue8',
+	Continue9 = 'Continue9',
 }
 
 export class AssetsManager {
@@ -103,18 +113,26 @@ export class AssetsManager {
 				{ "id": GameAssets.Controls, "src": "/data/images/backgrounds/controls.jpg" },
 				{ "id": GameAssets.Splash, "src": "/data/images/backgrounds/splash.png" },
 
-
-				
 				{ "id": PlayerFight.May, "src": "/data/spritesheets/Iam.json" },
 				{ "id": PlayerFight.Leona, "src": "/data/spritesheets/Anoel.json" },
 				{ "id": PlayerFight.Kyo, "src": "/data/spritesheets/oyk.json" },
 				{ "id": PlayerFight.Yory, "src": "/data/spritesheets/Iroi.json" },
 
+				{ "id": Sounds.Continue9, "src": "/data/sounds/common/nine.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue8, "src": "/data/sounds/common/eight.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue7, "src": "/data/sounds/common/seven.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue6, "src": "/data/sounds/common/six.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue5, "src": "/data/sounds/common/five.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue4, "src": "/data/sounds/common/four.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue3, "src": "/data/sounds/common/three.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue2, "src": "/data/sounds/common/two.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue1, "src": "/data/sounds/common/one.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Continue, "src": "/data/sounds/common/new_challenger.mp3", ogg:"noExtensionOggFile" },
 
-				{ "id": Sounds.Choose, "src": "/data/sounds/common/Choose_Sound_Effect.mp3"},
-				{ "id": Sounds.Coin, "src":   "/data/sounds/common/Coin_Effect.mp3"},
-				{ "id": Sounds.Select, "src": "/data/sounds/common/Selecting_Sound_Effect.mp3"},
-				
+				{ "id": Sounds.Choose, "src": "/data/sounds/common/Choose_Sound_Effect.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Coin, "src": "/data/sounds/common/Coin_Effect.mp3", ogg:"noExtensionOggFile" },
+				{ "id": Sounds.Select, "src": "/data/sounds/common/Selecting_Sound_Effect.mp3", ogg:"noExtensionOggFile" },
+
 			]
 		};
 	};
@@ -132,7 +150,7 @@ export class AssetsManager {
 			case PlayerSelect.May:
 				return PlayerFight.May;
 			case PlayerSelect.Yory:
-				return PlayerFight.Yory;	
+				return PlayerFight.Yory;
 		}
 	}
 }

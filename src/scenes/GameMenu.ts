@@ -110,7 +110,7 @@ export class GameMenu extends SceneBase {
 				this.PlayBackGroundMusic();
 				break;
 			case 'Enter':
-				this.PlayChoose();
+				//this.PlayChoose();
 				switch (this.CurrentOption) {
 					case Option.Play:
 						this.Manager.Load(SceneType.PlayerSelect);

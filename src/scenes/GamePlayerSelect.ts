@@ -147,12 +147,12 @@ export class GamePlayerSelect extends SceneBase {
 	}
 
 	private PlaySelect(): void {		
-		let instance = createjs.Sound.play('select');
+		//let instance = createjs.Sound.play('select');
 		// instance.volume = 0.1;
 	}
 
 	private PlayChoose():void{		
-		let instance = createjs.Sound.play('choose');
+		//let instance = createjs.Sound.play('choose');
 		// instance.volume = 0.1;
 	}
 }

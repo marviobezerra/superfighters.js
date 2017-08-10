@@ -7,36 +7,38 @@ export class Continue extends SceneBase {
 
 	private current = 9;
 	private KeyDownEvents: any;
+	private BackGroundImage: createjs.Bitmap;
 
 	constructor(manager: IManager) {
 		super(manager);
 
 		this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
+		this.AddBackground();
 		this.registerSounds();
-		
+
 	}
 
-	registerSounds(){
+	registerSounds() {
 		// createjs.Sound.addEventListener('fileload', this.LoadHandler.bind(this));
 
 		createjs.Sound.registerPlugins([createjs.WebAudioPlugin, createjs.FlashAudioPlugin]);
-		createjs.Sound.alternateExtensions = ["mp3"];	
+		createjs.Sound.alternateExtensions = ["mp3"];
 
-		createjs.Sound.registerSound({id:"9", src:"/data/sounds/common/nine.mp3"});
-		createjs.Sound.registerSound({id:"8", src:"/data/sounds/common/eight.mp3"});
-		createjs.Sound.registerSound({id:"7", src:"/data/sounds/common/seven.mp3"});
-		createjs.Sound.registerSound({id:"6", src:"/data/sounds/common/six.mp3"});
-		createjs.Sound.registerSound({id:"5", src:"/data/sounds/common/five.mp3"});
-		createjs.Sound.registerSound({id:"4", src:"/data/sounds/common/four.mp3"});
-		createjs.Sound.registerSound({id:"3", src:"/data/sounds/common/three.mp3"});
-		createjs.Sound.registerSound({id:"2", src:"/data/sounds/common/two.mp3"});
-		createjs.Sound.registerSound({id:"1", src:"/data/sounds/common/one.mp3"});
-		createjs.Sound.registerSound({id:"continue", src:"/data/sounds/common/new_challenger.mp3"});
+		createjs.Sound.registerSound({ id: "9", src: "/data/sounds/common/nine.mp3" });
+		createjs.Sound.registerSound({ id: "8", src: "/data/sounds/common/eight.mp3" });
+		createjs.Sound.registerSound({ id: "7", src: "/data/sounds/common/seven.mp3" });
+		createjs.Sound.registerSound({ id: "6", src: "/data/sounds/common/six.mp3" });
+		createjs.Sound.registerSound({ id: "5", src: "/data/sounds/common/five.mp3" });
+		createjs.Sound.registerSound({ id: "4", src: "/data/sounds/common/four.mp3" });
+		createjs.Sound.registerSound({ id: "3", src: "/data/sounds/common/three.mp3" });
+		createjs.Sound.registerSound({ id: "2", src: "/data/sounds/common/two.mp3" });
+		createjs.Sound.registerSound({ id: "1", src: "/data/sounds/common/one.mp3" });
+		createjs.Sound.registerSound({ id: "continue", src: "/data/sounds/common/new_challenger.mp3" });
 
 
 	}
 
-	drawTextLayer(){
+	drawTextLayer() {
 		let title = new createjs.Text('CONTINUE', "150px Haettenschweiler", "#FFF");
 		this.addChild(title);
 		title.x = this.Manager.Canvas.width / 2 - title.getBounds().width / 2 - 20;
@@ -73,8 +75,19 @@ export class Continue extends SceneBase {
 		}
 	}
 
-	sfx(){
+	sfx() {
 		createjs.Sound.play(this.current.toString());
+	}
+
+	private AddBackground(): void {
+		this.BackGroundImage = new createjs.Bitmap(this.Manager.AssetsManager.Load(GameAssets.PlayerSelect));
+		this.addChild(this.BackGroundImage);
+		this.AdjustBackgroundSize();
+	}
+
+	private AdjustBackgroundSize(): void {
+		this.BackGroundImage.scaleX = this.Manager.Canvas.width / this.BackGroundImage.getBounds().width;
+		this.BackGroundImage.scaleY = this.Manager.Canvas.height / this.BackGroundImage.getBounds().height;
 	}
 
 
@@ -85,7 +98,7 @@ export class Continue extends SceneBase {
 	}
 
 	public UnRegister(): void {
-		document.removeEventListener('keydown', this.KeyDownEvents, false);		
+		document.removeEventListener('keydown', this.KeyDownEvents, false);
 	}
 
 	private RegisterKeyDownEvents(event: KeyboardEvent): void {

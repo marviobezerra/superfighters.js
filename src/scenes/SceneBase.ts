@@ -8,4 +8,8 @@ export abstract class SceneBase extends createjs.Container {
 
 	abstract Register(): void;
 	abstract UnRegister(): void;
+
+	public Dispose(object:createjs.DisplayObject):void{
+		this.removeChild(object);
+	}
 } 

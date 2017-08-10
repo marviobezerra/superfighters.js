@@ -33,6 +33,17 @@ import '../../data/sounds/Iori_40-1.mp3';
 import '../../data/sounds/common/Choose_Sound_Effect.mp3';
 import '../../data/sounds/common/Coin_Effect.mp3';
 import '../../data/sounds/common/Selecting_Sound_Effect.mp3';
+import '../../data/sounds/common/new_challenger.mp3';
+
+import '../../data/sounds/common/nine.mp3'
+import '../../data/sounds/common/eight.mp3'
+import '../../data/sounds/common/seven.mp3'
+import '../../data/sounds/common/six.mp3'
+import '../../data/sounds/common/five.mp3'
+import '../../data/sounds/common/four.mp3'
+import '../../data/sounds/common/three.mp3'
+import '../../data/sounds/common/two.mp3'
+import '../../data/sounds/common/one.mp3'
 
 
 export enum GameAssets {

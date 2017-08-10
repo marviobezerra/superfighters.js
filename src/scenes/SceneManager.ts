@@ -7,6 +7,7 @@ import { GameOver } from './GameOver';
 import { GameFight } from './GameFight';
 import { Map } from '../common/util';
 import { Splash } from "./Splash";
+import { Continue } from './Continue';
 
 export enum SceneType {
 	Menu,
@@ -14,7 +15,8 @@ export enum SceneType {
 	PlayerSelect,
 	Fight,
 	GameOver,
-	Splash
+	Splash,
+	Continue
 }
 
 export interface IManager {
@@ -33,8 +35,9 @@ export class SceneManager implements IManager {
 	constructor(private Stage: createjs.Stage, public AssetsManager: AssetsManager, public Canvas: HTMLCanvasElement) {
 		this.CurrentCaracter = PlayerFight.Yory;
 		//this.Load(SceneType.Fight);
-		this.Load(SceneType.Menu);
+		// this.Load(SceneType.Menu);
 		// this.Load(SceneType.Splash); // Not working for know. 
+		this.Load(SceneType.Continue);
 	}
 
 	public Load(sceneType: SceneType): void {
@@ -66,6 +69,8 @@ export class SceneManager implements IManager {
 				return new GameOver(this);
 			case SceneType.Splash:
 				return new Splash(this);
+			case SceneType.Continue:
+				return new Continue(this);
 		}
 	}
 }

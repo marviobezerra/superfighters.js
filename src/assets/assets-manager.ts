@@ -34,6 +34,7 @@ import '../../data/sounds/common/Choose_Sound_Effect.mp3';
 import '../../data/sounds/common/Coin_Effect.mp3';
 import '../../data/sounds/common/Selecting_Sound_Effect.mp3';
 import '../../data/sounds/common/new_challenger.mp3';
+import '../../data/sounds/common/common_00006.mp3';
 
 import '../../data/sounds/common/nine.mp3'
 import '../../data/sounds/common/eight.mp3'

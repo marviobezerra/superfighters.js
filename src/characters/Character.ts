@@ -28,8 +28,8 @@ export class Character extends createjs.Sprite {
 
 	constructor(data: Object, private manager: IManager, private fight: GameFight, private playerOne: boolean) {
 		super(new createjs.SpriteSheet(data), "stand");
-
-		this.Ground = manager.Canvas.height * 0.85;
+		
+		this.Ground = (manager.Canvas.height * .95) - this.getBounds().height;
 		this.PlayingAnimation = Animations.Stand;
 
 		if (playerOne) {
@@ -92,7 +92,7 @@ export class Character extends createjs.Sprite {
 		let sizeY = this.manager.Canvas.width * 0.25;
 
 		this.x = this.playerOne ? this.manager.Canvas.width * .2 : this.manager.Canvas.width * .8;
-		this.y = this.Ground - sizeY;
+		this.y = this.Ground;
 
 		if (!this.playerOne) {
 			this.Flip = true;

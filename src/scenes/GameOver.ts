@@ -55,7 +55,6 @@ export class GameOver extends SceneBase {
 
 	public UnRegister(): void {
 		document.removeEventListener('keydown', this.KeyDownEvents, false);
-
 	}
 
 	private RegisterKeyDownEvents(event: KeyboardEvent): void {

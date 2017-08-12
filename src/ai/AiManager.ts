@@ -1,4 +1,6 @@
-import { Character, Animations, Directions } from '../characters/Character';
+import { Character, Animations } from '../characters/Character';
+import { CharacterAction } from '../characters/CharacterActions';
+
 import { SceneBase } from '../scenes/SceneBase';
 export class AiManager {
 
@@ -13,6 +15,11 @@ export class AiManager {
 	}
 
 	static changeBehavior(player: Character, enemy: Character) {
+
+		if (player.Damage >= 100 || enemy.Damage >= 100) {
+			return;
+		}
+
 		let aiState: AiState = Math.floor((Math.random() * (Object.keys(AiState).length/2)));		
 		console.log( "Changed behavior to: ",  aiState);
 		switch (aiState) {
@@ -46,36 +53,36 @@ export class AiManager {
 
 	static moveForward(player: Character, enemy: Character, isLeft: boolean) {
 		if (this.checkProximity(player.x, enemy.x)) {
-			enemy.Punch();
+			enemy.Actions.Execute(CharacterAction.Punch);
 
 		} else {
 
 			if (isLeft) {
-				enemy.MoveForward(Directions.Left, 20); //to be define by the global velocity when defined
+				enemy.Actions.Execute(CharacterAction.MoveLeft);
 			}
 			else {
-				enemy.MoveForward(Directions.Right, 20); //to be define by the global velocity when defined
+				enemy.Actions.Execute(CharacterAction.MoveRight);
 			}
 		}
 	}
 
 	static moveBackwards(player: Character, enemy: Character, isLeft: boolean) {
 		if (this.checkProximity(player.x, enemy.x)) {
-			enemy.Punch();
+			enemy.Actions.Execute(CharacterAction.Punch);
 
 		} else {
 
 			if (isLeft) {
-				enemy.MoveBackWards(Directions.Left, 3);
+				enemy.Actions.Execute(CharacterAction.MoveLeft);
 			}
 			else {
-				enemy.MoveBackWards(Directions.Right, 3);
+				enemy.Actions.Execute(CharacterAction.MoveRight);
 			}
 		}
 	}
 
 	static hit(enemy: Character) {
-		enemy.Punch();
+		enemy.Actions.Execute(CharacterAction.Punch);
 	}
 
 	static checkProximity(pX: number, eX: number) {

@@ -33,20 +33,20 @@ export class GameFight extends SceneBase {
 	public Register(): void {
 		document.addEventListener('keydown', this.KeyDownEvents, false);
 		createjs.Ticker.addEventListener("tick", this.TickEvent);
-		
+
 		this.Start();
 	}
 
 	public UnRegister(): void {
 		document.removeEventListener('keydown', this.KeyDownEvents, false);
 		createjs.Ticker.removeEventListener("tick", this.TickEvent);
-		
+
 		this.Playing = false;
 		this.PlayerOne.Stop();
 		this.PlayerTwo.Stop();
 	}
 
-	private Tick(){		
+	private Tick() {
 		AiManager.AiCheck(this.PlayerOne, this.PlayerTwo, createjs.Ticker.getTicks());
 	}
 
@@ -63,6 +63,7 @@ export class GameFight extends SceneBase {
 
 		this.PlayerOne = new Character(this.Manager.AssetsManager.Load(this.Manager.CurrentCaracter), this.Manager, this, true);
 		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.Oponent), this.Manager, this, false);
+
 
 		this.addChild(this.PlayerOne, this.PlayerTwo);
 		this.FightElements.UpdatePlayerInfo();
@@ -83,7 +84,26 @@ export class GameFight extends SceneBase {
 		}
 	}
 
-	public PlayerMove() : void {
+	public PlayerHit(player: Character): void {
+
+		let oponent = player !== this.PlayerOne
+			? this.PlayerOne
+			: this.PlayerTwo;
+
+		let distance = Math.abs(player.x - oponent.x);
+
+		if (distance < 300) {
+			oponent.GetHit();
+			this.FightElements.UpdatePlaterDamageBar(player !== this.PlayerOne, oponent.Damage);
+		}
+
+		if (oponent.Damage >= 100) {
+			oponent.Die();
+			this.NewFight();
+		}
+	}
+
+	public PlayerMove(): void {
 		if (this.PlayerOne.Flip && this.PlayerOne.x < this.PlayerTwo.x) {
 			this.PlayerOne.FlipDirection();
 			this.PlayerTwo.FlipDirection();
@@ -95,20 +115,25 @@ export class GameFight extends SceneBase {
 		}
 	}
 
+	private NewFight(): void {
+		this.Battle++;
+		//this.Start();
+	}
+
 	private TimerLoop(): void {
-		
-				setTimeout(() => {
-					if (this.Playing) {
-						this.Timer--;
-						this.FightElements.CreateTimerText();
-		
-						if (this.Timer <= 0) {
-							this.Manager.Load(SceneType.Continue);
-							return;
-						}
-		
-						this.TimerLoop();
-					}
-				}, 1000);
+
+		setTimeout(() => {
+			if (this.Playing) {
+				this.Timer--;
+				this.FightElements.CreateTimerText();
+
+				if (this.Timer <= 0) {
+					this.Manager.Load(SceneType.Continue);
+					return;
+				}
+
+				this.TimerLoop();
 			}
+		}, 1000);
+	}
 }

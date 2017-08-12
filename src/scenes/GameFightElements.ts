@@ -10,6 +10,9 @@ export class GameFightElements {
 	private PlayerOnePowerBar: createjs.Shape;
 	private PlayerTwoPowerBar: createjs.Shape;
 
+	private PlayerOneDamageBar: createjs.Shape;
+	private PlayerTwoDamageBar: createjs.Shape;
+
 	private PlayerOneImageBorder: createjs.Shape;
 	private PlayerTwoImageBorder: createjs.Shape
 
@@ -33,6 +36,9 @@ export class GameFightElements {
 
 		this.CreatePowerBar(true);
 		this.CreatePowerBar(false);
+
+		this.CreateDamageBar(true);
+		this.CreateDamageBar(false);
 	}
 
 	private AddBackground(): void {
@@ -122,6 +128,41 @@ export class GameFightElements {
 		return border;
 	}
 
+	private CreateDamageBar(playerOne: boolean): void {
+		if (playerOne && this.PlayerOneDamageBar) {
+			this.fight.removeChild(this.PlayerOneDamageBar);
+		}
+
+		if (!playerOne && this.PlayerTwoDamageBar) {
+			this.fight.removeChild(this.PlayerTwoDamageBar);
+		}
+
+		let border = new createjs.Shape();
+		let command = border.graphics
+
+			.beginFill("#f54848")
+			.command;
+
+		let timerSize = 200;
+		let size = 0;
+
+		border.alpha = 0.8;
+		border.snapToPixel = true;
+		border.graphics.drawRect(0, 0, size, 38);
+		border.setBounds(0, 0, size, 40);
+		border.x = playerOne ? this.PlayerOnePowerBar.x + 1 : (this.PlayerTwoPowerBar.x + this.PlayerTwoPowerBar.getBounds().width) - 1 - size;
+		border.y = 21;
+
+		if (playerOne) {
+			this.PlayerOneDamageBar = border;
+			this.fight.addChild(this.PlayerOneDamageBar);
+			return;
+		}
+
+		this.PlayerTwoDamageBar = border;
+		this.fight.addChild(this.PlayerTwoDamageBar);
+	}
+
 	private CreatePowerBar(playerOne: boolean): void {
 
 		if (playerOne && this.PlayerOnePowerBar) {
@@ -159,19 +200,6 @@ export class GameFightElements {
 		this.fight.addChild(this.PlayerTwoPowerBar);
 	}
 
-	public UpdatePlayerInfo(): void {
-		// Update the background image
-		this.BackGroundImage.image = this.fight.Manager.AssetsManager.Load(this.BackGround[this.fight.Battle]);
-
-		// Update the PlayerOne and PlayerTwo Text
-		this.CreatePlayerText(true);
-		this.CreatePlayerText(false);
-
-		// Update Player Image
-		this.CreatePlayerImage(true);
-		this.CreatePlayerImage(false);
-	}
-
 	private CreatePlayerText(playerOne: boolean): void {
 
 		if (playerOne && this.PlayerOneText) {
@@ -203,6 +231,41 @@ export class GameFightElements {
 
 		this.PlayerTwoText = result;
 		this.fight.addChild(this.PlayerTwoText);
+	}
+
+	public UpdatePlayerInfo(): void {
+		// Update the background image
+		this.BackGroundImage.image = this.fight.Manager.AssetsManager.Load(this.BackGround[this.fight.Battle]);
+
+		// Update the PlayerOne and PlayerTwo Text
+		this.CreatePlayerText(true);
+		this.CreatePlayerText(false);
+
+		// Update Player Image
+		this.CreatePlayerImage(true);
+		this.CreatePlayerImage(false);
+	}
+
+	public UpdatePlaterDamageBar(playerOne: boolean, value: number) {
+		let damageBar = playerOne
+			? this.PlayerOneDamageBar
+			: this.PlayerTwoDamageBar;
+
+		let powerBar = playerOne
+			? this.PlayerOnePowerBar
+			: this.PlayerTwoPowerBar;
+
+		let maxSize = powerBar.getBounds().width;
+		let size = maxSize * (value / 100);
+
+		size = size > maxSize
+			? maxSize
+			: size;
+
+		damageBar.graphics.drawRect(0, 0, size, 38);
+		damageBar.setBounds(0, 0, size, 40);
+		damageBar.x = playerOne ? powerBar.x + 1 : (powerBar.x + powerBar.getBounds().width) - 1 - size;
+
 	}
 
 	public CreateTimerText(): void {

@@ -1,20 +1,17 @@
 import { AssetsManager } from "../assets/assets-manager";
 import { IManager } from '../scenes/SceneManager';
 import { GameFight } from '../scenes/GameFight';
+import { CharacterActions, CharacterAction } from './CharacterActions';
 
 export enum Animations {
-	Punch = "punch",	
+	Punch = "punch",
 	Jump = "jump_1",
 	Walking = "walk_forward",
 	Win = "taunt",
 	WalkingBackwards = "walk_backwards",
 	Die = "die",
-	Stand = "stand"
-}
-
-export enum Directions {
-	Right = 0,
-	Left = 1
+	Stand = "stand",
+	GotHit = "got_hit"
 }
 
 export class Character extends createjs.Sprite {
@@ -22,13 +19,16 @@ export class Character extends createjs.Sprite {
 	private Ground = 450;
 	private KeyDownEvents: any;
 	private KeyUpEvents: any;
-	private PlayingAnimation: Animations;
+	public PlayingAnimation: Animations;
 	public HitBorder: createjs.Shape;
+	public Actions: CharacterActions;
 	public Flip: boolean;
+	public Damage = 0;
 
-	constructor(data: Object, private manager: IManager, private fight: GameFight, private playerOne: boolean) {
+	constructor(data: Object, public manager: IManager, private fight: GameFight, private playerOne: boolean) {
 		super(new createjs.SpriteSheet(data), "stand");
-		
+
+		this.Actions = new CharacterActions(this, fight);
 		this.Ground = (manager.Canvas.height * .95) - this.getBounds().height;
 		this.PlayingAnimation = Animations.Stand;
 
@@ -36,61 +36,11 @@ export class Character extends createjs.Sprite {
 			this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
 			this.KeyUpEvents = this.RegisterKeyUpEvents.bind(this);
 		}
-
-	}
-
-	public MoveForward(direction: Directions, force: number) {		
-		if (this.PlayingAnimation === Animations.Stand) {
-			switch (direction) {
-				case Directions.Right:
-					this.x += force;
-					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-					this.gotoAndPlay(Animations.Walking);
-					this.PlayingAnimation = Animations.Walking;
-					break;
-				case Directions.Left:
-					this.x -= force;
-					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-					this.gotoAndPlay(Animations.Walking);
-					this.PlayingAnimation = Animations.Walking;
-				default:
-					break;
-			}
-		}
-	}
-
-	public MoveBackWards(direction: Directions, force: number) {
-		if (this.PlayingAnimation === Animations.Stand) {
-			switch (direction) {
-				case Directions.Right:
-					this.x += force;
-					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-					this.gotoAndPlay(Animations.WalkingBackwards);
-					this.PlayingAnimation = Animations.WalkingBackwards;
-					break;
-				case Directions.Left:
-					this.x -= force;
-					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-					this.gotoAndPlay(Animations.WalkingBackwards);
-					this.PlayingAnimation = Animations.WalkingBackwards;
-				default:
-					break;
-			}
-		}
-	}
-
-	public Punch() {
-		if (this.PlayingAnimation !== Animations.Punch) {
-			this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-			this.gotoAndPlay(Animations.Punch);
-			this.PlayingAnimation = Animations.Punch;
-		}
 	}
 
 	public Start(): void {
-		let sizeX = this.manager.Canvas.height * 0.25;
-		let sizeY = this.manager.Canvas.width * 0.25;
-
+		this.Actions.Reset();
+		this.Damage = 0;
 		this.x = this.playerOne ? this.manager.Canvas.width * .2 : this.manager.Canvas.width * .8;
 		this.y = this.Ground;
 
@@ -132,7 +82,17 @@ export class Character extends createjs.Sprite {
 		this.UpdateHitBorder();
 	}
 
-	private UpdateHitBorder(): void {
+	public GetHit(): void {
+		this.Actions.Execute(CharacterAction.GotHit);
+		this.Damage += 10;
+	}
+
+	public Die(): void {
+		debugger;
+		this.Actions.Execute(CharacterAction.Die);
+	}
+
+	public UpdateHitBorder(): void {
 		if (this.HitBorder) {
 
 			let bounds = this.getBounds();
@@ -168,93 +128,34 @@ export class Character extends createjs.Sprite {
 		this.fight.addChild(this.HitBorder);
 	}
 
-	public AfterPunch(e: any) {
-		this.removeEventListener("animationend", this.AfterPunch.bind(this), false);
-		this.gotoAndPlay(Animations.Stand);
-		this.PlayingAnimation = Animations.Stand;
-	}
-
 	private RegisterKeyDownEvents(event: KeyboardEvent): void {
 
 		let newPos = 0;
 
 		switch (event.key) {
 			case ' ':
-				if (this.PlayingAnimation !== Animations.Punch) {
-					this.addEventListener("animationend", this.AfterPunch.bind(this), false);
-					this.gotoAndPlay(Animations.Punch);
-					this.PlayingAnimation = Animations.Punch;
-				}
+				this.Actions.Execute(CharacterAction.Punch);
 				break;
-
 			case 'ArrowUp':
-				if (this.PlayingAnimation !== Animations.Jump) {
-					this.gotoAndPlay(Animations.Jump);
-					this.PlayingAnimation = Animations.Jump;
-				}
-
-				newPos = this.y;
-				let jumpSize = 200;
-
-				createjs.Tween
-					.get(this)
-					.to({
-						y: newPos - jumpSize,
-						x: this.x + (jumpSize / 2)
-					}, 300)
-					.to({
-						y: newPos,
-						x: this.x + jumpSize
-					}, 300)
-					.call(() => {
-						this.gotoAndPlay(Animations.Stand);
-						this.PlayingAnimation = Animations.Stand;
-						this.UpdateHitBorder();
-						this.fight.PlayerMove();
-					});
-
-
+				this.Actions.Execute(CharacterAction.Jump);
 				break;
 			case 'ArrowLeft':
-				if (this.PlayingAnimation !== Animations.Walking) {
-					this.gotoAndPlay(Animations.Walking);
-					this.PlayingAnimation = Animations.Walking;
-				}
-
-				newPos = this.x - 20;
-				this.x = newPos < 0 ? 0 : newPos;
-				this.fight.PlayerMove();
-
+				this.Actions.Execute(CharacterAction.MoveLeft);
 				break;
 			case 'ArrowRight':
-				if (this.PlayingAnimation !== Animations.WalkingBackwards) {
-					this.gotoAndPlay(Animations.WalkingBackwards);
-					this.PlayingAnimation = Animations.WalkingBackwards;
-				}
-
-				newPos = this.x + 20;
-				let limit = this.manager.Canvas.width - this.getBounds().width;
-				this.x = newPos > limit ? limit : newPos;
-				this.fight.PlayerMove();
-
+				this.Actions.Execute(CharacterAction.MoveRight);
 				break;
 		}
-
-		this.UpdateHitBorder();
 	}
 
 	private RegisterKeyUpEvents(event: KeyboardEvent): void {
 		switch (event.key) {
 			case 'ArrowLeft':
-				this.gotoAndPlay(Animations.Stand);
-				this.PlayingAnimation = Animations.Stand;
+				this.Actions.Execute(CharacterAction.Stand);
 				break;
 			case 'ArrowRight':
-				this.gotoAndPlay(Animations.Stand);
-				this.PlayingAnimation = Animations.Stand;
+				this.Actions.Execute(CharacterAction.Stand);
 				break;
 		}
-
-		this.UpdateHitBorder();
 	}
 }

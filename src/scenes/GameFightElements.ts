@@ -246,7 +246,7 @@ export class GameFightElements {
 		this.CreatePlayerImage(false);
 	}
 
-	public UpdatePlaterDamageBar(playerOne: boolean, value: number) {
+	public UpdatePlayerDamageBar(playerOne: boolean, value: number) {
 		let damageBar = playerOne
 			? this.PlayerOneDamageBar
 			: this.PlayerTwoDamageBar;
@@ -258,8 +258,8 @@ export class GameFightElements {
 		let maxSize = powerBar.getBounds().width;
 		let size = maxSize * (value / 100);
 
-		size = size > maxSize
-			? maxSize
+		size = size > maxSize - 1
+			? maxSize - 1
 			: size;
 
 		damageBar.graphics.drawRect(0, 0, size, 38);

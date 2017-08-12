@@ -5,6 +5,13 @@ import { Character } from '../characters/Character';
 import { AiManager } from '../ai/AiManager';
 import { GameFightElements } from './GameFightElements';
 
+enum FightInfo {
+	Ready,
+	Fight,
+	Winner,
+	Loser
+}
+
 export class GameFight extends SceneBase {
 
 	private KeyDownEvents: any;
@@ -13,6 +20,7 @@ export class GameFight extends SceneBase {
 	private PlayerOne: Character;
 	private PlayerTwo: Character;
 
+	private FightInfoText: createjs.Text;
 	private FightElements: GameFightElements;
 
 	public Oponent: PlayerFight;
@@ -50,12 +58,77 @@ export class GameFight extends SceneBase {
 		AiManager.AiCheck(this.PlayerOne, this.PlayerTwo, createjs.Ticker.getTicks());
 	}
 
+	private DiplayInfo(value: FightInfo) {
+		let info = "Ready";
+
+		switch (value) {
+			case FightInfo.Fight:
+				info = "Fight";
+				break;
+			case FightInfo.Ready:
+				info = "Ready";
+				break;
+			case FightInfo.Loser:
+				info = "You lose";
+				break;
+			case FightInfo.Winner:
+				info = "You win";
+				break;
+			default:
+				break;
+		}
+
+		if (this.FightInfoText) {
+			this.removeChild(this.FightInfoText);
+		}
+
+		this.FightInfoText = new createjs.Text(info, "100px Haettenschweiler", "#FFF");
+
+		this.addChild(this.FightInfoText);
+
+		this.FightInfoText.x = this.Manager.Canvas.width / 2 - this.FightInfoText.getBounds().width / 2;
+		this.FightInfoText.y = this.Manager.Canvas.height / 2 - this.FightInfoText.getBounds().height / 2;
+		this.FightInfoText.regX = this.FightInfoText.getBounds().width / 2;
+		this.FightInfoText.regY = this.FightInfoText.getBounds().height / 2;
+
+		createjs.Tween.get(this.FightInfoText)
+			.to({ scaleY: -2 })
+			.to({ scaleX: 3, scaleY: 3 }, 200)
+			.wait(1500)
+			.to({ scaleX: 1, scaleY: 1 }, 200)
+			.to({ visible: false })
+			.call((c) => {
+				if (value === FightInfo.Ready) {
+					this.DiplayInfo(FightInfo.Fight);
+					return;
+				}
+
+				if (value === FightInfo.Fight) {
+					this.Begin();
+					return;
+				}
+
+				if (value === FightInfo.Winner) {
+					this.Battle++;
+					this.Start();
+					return;
+				}
+
+				if (value === FightInfo.Loser) {
+					this.Manager.Load(SceneType.Continue);
+					return;
+				}
+			});
+	}
+
 	private Start(): void {
 		if (this.PlayerOne) {
+			this.removeChild(this.PlayerOne.HitBorder);
 			this.removeChild(this.PlayerOne);
 		}
 
 		if (this.PlayerTwo) {
+			this.removeChild(this.PlayerTwo.HitBorder);
 			this.removeChild(this.PlayerTwo);
 		}
 
@@ -67,11 +140,18 @@ export class GameFight extends SceneBase {
 
 		this.addChild(this.PlayerOne, this.PlayerTwo);
 		this.FightElements.UpdatePlayerInfo();
+		this.FightElements.UpdatePlayerDamageBar(true, this.PlayerOne.Damage);
+		this.FightElements.UpdatePlayerDamageBar(false, this.PlayerTwo.Damage);
+		this.Timer = 90;
+		this.FightElements.CreateTimerText();
 
+		this.DiplayInfo(FightInfo.Ready);
+	}
+
+	private Begin(): void {
 		this.PlayerOne.Start();
 		this.PlayerTwo.Start();
 
-		this.Timer = 90;
 		this.Playing = true;
 		this.TimerLoop();
 	}
@@ -94,13 +174,29 @@ export class GameFight extends SceneBase {
 
 		if (distance < 300) {
 			oponent.GetHit();
-			this.FightElements.UpdatePlaterDamageBar(player !== this.PlayerOne, oponent.Damage);
+			this.FightElements.UpdatePlayerDamageBar(player !== this.PlayerOne, oponent.Damage);
 		}
 
-		if (oponent.Damage >= 100) {
-			oponent.Die();
-			this.NewFight();
+		if (oponent.Damage < 100 && player.Damage < 100) {
+			return;
 		}
+
+		this.FigthEnds(false);
+	}
+
+	private FigthEnds(timeOver: boolean): void {
+		this.Playing = false;
+		let playerOneWins = this.PlayerOne.Damage < this.PlayerTwo.Damage;
+
+		if (playerOneWins) {
+			this.PlayerOne.Win();
+			this.PlayerTwo.Die(timeOver);
+		} else {
+			this.PlayerOne.Die(timeOver);
+			this.PlayerTwo.Win();
+		}
+
+		this.DiplayInfo(playerOneWins ? FightInfo.Winner : FightInfo.Loser);
 	}
 
 	public PlayerMove(): void {
@@ -128,7 +224,7 @@ export class GameFight extends SceneBase {
 				this.FightElements.CreateTimerText();
 
 				if (this.Timer <= 0) {
-					this.Manager.Load(SceneType.Continue);
+					this.FigthEnds(true);
 					return;
 				}
 

@@ -2,7 +2,9 @@ import { Character, Animations } from './Character';
 import { GameFight } from '../scenes/GameFight';
 
 export enum CharacterAction {
+	Win,
 	Die,
+	TimeOver,
 	MoveRight,
 	MoveLeft,
 	Jump,
@@ -16,6 +18,7 @@ export class CharacterActions {
 	private JumpSize = 200;
 	private AfterAnimationEvent: any;
 	private BlockAction = false;
+	private AnimationsStop = [Animations.Die, Animations.Win, Animations.TimeOver];
 
 	constructor(private player: Character, private fight: GameFight) {
 		this.AfterAnimationEvent = this.AfterAnimation.bind(this);
@@ -28,7 +31,7 @@ export class CharacterActions {
 	}
 
 	public Execute(action: CharacterAction): void {
-		if (this.BlockAction && action != CharacterAction.Die) {
+		if (this.BlockAction && action !== CharacterAction.Die && action !== CharacterAction.Win) {
 			return;
 		}
 
@@ -53,6 +56,12 @@ export class CharacterActions {
 				break;
 			case CharacterAction.Die:
 				this.ExecuteDie();
+				break;
+			case CharacterAction.TimeOver:
+				this.ExecuteTimeOver();
+				break;
+			case CharacterAction.Win:
+				this.ExecuteWin();
 				break;
 			default:
 				break;
@@ -151,18 +160,39 @@ export class CharacterActions {
 		this.player.UpdateHitBorder();
 	}
 
+	private ExecuteTimeOver(): void {
+		if (this.player.PlayingAnimation !== Animations.TimeOver) {
+			this.BlockAction = true;
+			this.player.addEventListener("animationend", this.AfterAnimationEvent, false);
+			this.player.gotoAndPlay(Animations.TimeOver);
+			this.player.PlayingAnimation = Animations.TimeOver;
+		}
+
+		this.player.UpdateHitBorder();
+	}
+
+	private ExecuteWin(): void {
+		if (this.player.PlayingAnimation !== Animations.Win) {
+			this.BlockAction = true;
+			this.player.addEventListener("animationend", this.AfterAnimationEvent, false);
+			this.player.gotoAndPlay(Animations.Win);
+			this.player.PlayingAnimation = Animations.Win;
+		}
+
+		this.player.UpdateHitBorder();
+	}
+
 	public AfterAnimation(e: any) {
 		this.player.removeEventListener("animationend", this.AfterAnimationEvent, false);
 
-		if (this.player.PlayingAnimation !== Animations.Die) {
-
-			this.player.gotoAndPlay(Animations.Stand);
-			this.player.PlayingAnimation = Animations.Stand;
-			this.BlockAction = false;
-			this.player.UpdateHitBorder();
+		if (this.AnimationsStop.indexOf(this.player.PlayingAnimation) >= 0) {
+			this.player.stop();
 			return;
 		}
 
-		this.player.stop();
+		this.player.gotoAndPlay(Animations.Stand);
+		this.player.PlayingAnimation = Animations.Stand;
+		this.BlockAction = false;
+		this.player.UpdateHitBorder();
 	}
 }

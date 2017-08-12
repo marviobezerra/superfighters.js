@@ -10,6 +10,7 @@ export enum Animations {
 	Win = "taunt",
 	WalkingBackwards = "walk_backwards",
 	Die = "die",
+	TimeOver = "time_lose",
 	Stand = "stand",
 	GotHit = "got_hit"
 }
@@ -36,18 +37,13 @@ export class Character extends createjs.Sprite {
 			this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
 			this.KeyUpEvents = this.RegisterKeyUpEvents.bind(this);
 		}
+
+		this.StartPosition();
 	}
 
 	public Start(): void {
 		this.Actions.Reset();
 		this.Damage = 0;
-		this.x = this.playerOne ? this.manager.Canvas.width * .2 : this.manager.Canvas.width * .8;
-		this.y = this.Ground;
-
-		if (!this.playerOne) {
-			this.Flip = true;
-			this.scaleX *= -1;
-		}
 
 		if (this.playerOne) {
 			document.addEventListener('keydown', this.KeyDownEvents, false);
@@ -82,14 +78,28 @@ export class Character extends createjs.Sprite {
 		this.UpdateHitBorder();
 	}
 
+	private StartPosition(): void {
+		this.x = this.playerOne ? this.manager.Canvas.width * .2 : this.manager.Canvas.width * .8;
+		this.y = this.Ground;
+
+		if (!this.playerOne) {
+			this.Flip = true;
+			this.scaleX *= -1;
+		}
+	}
+
 	public GetHit(): void {
 		this.Actions.Execute(CharacterAction.GotHit);
 		this.Damage += 10;
 	}
 
-	public Die(): void {
-		debugger;
-		this.Actions.Execute(CharacterAction.Die);
+	public Die(timeOver: boolean = false): void {
+		this.Actions.Execute(timeOver ? CharacterAction.TimeOver : CharacterAction.Die);
+		this.y = this.Ground + this.getBounds().height;
+	}
+
+	public Win(): void {
+		this.Actions.Execute(CharacterAction.Win);
 	}
 
 	public UpdateHitBorder(): void {

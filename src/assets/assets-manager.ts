@@ -69,10 +69,10 @@ export enum PlayerSelect {
 }
 
 export enum PlayerFight {
-	Kyo = 'Kyo-Fight',
 	Leona = 'Leona-Fight',
-	Yory = 'Yory-Fight',
-	May = 'May-Fight'
+	May = 'May-Fight',
+	Kyo = 'Kyo-Fight',
+	Yory = 'Yory-Fight'
 }
 
 export enum Sounds {

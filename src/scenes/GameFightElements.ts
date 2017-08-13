@@ -236,7 +236,7 @@ export class GameFightElements {
 	public UpdatePlayerInfo(): void {
 		// Update the background image
 		this.BackGroundImage.image = this.fight.Manager.AssetsManager.Load(this.BackGround[this.fight.Battle]);
-
+		this.AdjustBackgroundSize();
 		// Update the PlayerOne and PlayerTwo Text
 		this.CreatePlayerText(true);
 		this.CreatePlayerText(false);
@@ -244,6 +244,11 @@ export class GameFightElements {
 		// Update Player Image
 		this.CreatePlayerImage(true);
 		this.CreatePlayerImage(false);
+	}
+
+	public ResetDamageBar(): void {
+		this.UpdatePlayerDamageBar(true, 0);
+		this.UpdatePlayerDamageBar(false, 0);
 	}
 
 	public UpdatePlayerDamageBar(playerOne: boolean, value: number) {
@@ -256,7 +261,7 @@ export class GameFightElements {
 			: this.PlayerTwoPowerBar;
 
 		let maxSize = powerBar.getBounds().width;
-		let size = maxSize * (value / 100);
+		let size = value === 0 ? 0 : maxSize * (value / 100);
 
 		size = size > maxSize - 1
 			? maxSize - 1

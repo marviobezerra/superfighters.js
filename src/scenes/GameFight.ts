@@ -41,7 +41,6 @@ export class GameFight extends SceneBase {
 	public Register(): void {
 		document.addEventListener('keydown', this.KeyDownEvents, false);
 		createjs.Ticker.addEventListener("tick", this.TickEvent);
-
 		this.Start();
 	}
 
@@ -136,7 +135,8 @@ export class GameFight extends SceneBase {
 
 		this.PlayerOne = new Character(this.Manager.AssetsManager.Load(this.Manager.CurrentCaracter), this.Manager, this, true);
 		this.PlayerTwo = new Character(this.Manager.AssetsManager.Load(this.Oponent), this.Manager, this, false);
-
+		this.PlayerOne.Damage = 0;
+		this.PlayerTwo.Damage = 0;
 
 		this.addChild(this.PlayerOne, this.PlayerTwo);
 		this.FightElements.UpdatePlayerInfo();
@@ -144,6 +144,7 @@ export class GameFight extends SceneBase {
 		this.FightElements.UpdatePlayerDamageBar(false, this.PlayerTwo.Damage);
 		this.Timer = 90;
 		this.FightElements.CreateTimerText();
+		this.FightElements.ResetDamageBar();
 
 		this.DiplayInfo(FightInfo.Ready);
 	}
@@ -153,6 +154,25 @@ export class GameFight extends SceneBase {
 		this.PlayerTwo.Start();
 
 		this.Playing = true;
+
+		let level = 30;
+
+		switch (this.Battle) {
+			case 1:
+				level = 20;
+				break;
+			case 2:
+				level = 5;
+				break;
+			case 3:
+				level = 1;
+				break;
+			default:
+				break;
+		}
+
+
+		AiManager.aiBehaviorChangeInterval = level;
 		this.TimerLoop();
 	}
 
@@ -173,7 +193,7 @@ export class GameFight extends SceneBase {
 		let distance = Math.abs(player.x - oponent.x);
 
 		if (distance < 300) {
-			oponent.GetHit();
+			oponent.GetHit(this.Battle);
 			this.FightElements.UpdatePlayerDamageBar(player !== this.PlayerOne, oponent.Damage);
 		}
 

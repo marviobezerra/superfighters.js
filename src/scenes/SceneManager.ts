@@ -35,8 +35,8 @@ export class SceneManager implements IManager {
 	constructor(private Stage: createjs.Stage, public AssetsManager: AssetsManager, public Canvas: HTMLCanvasElement) {
 		this.CurrentCaracter = PlayerFight.Yory;
 		//this.Load(SceneType.Fight);
-		 this.Load(SceneType.Menu);
-		// this.Load(SceneType.Splash); // Not working for know. 
+		//this.Load(SceneType.Menu);
+		this.Load(SceneType.Splash); // Not working for know. 
 		//this.Load(SceneType.Continue);
 	}
 

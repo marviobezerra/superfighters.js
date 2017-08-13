@@ -88,9 +88,11 @@ export class Character extends createjs.Sprite {
 		}
 	}
 
-	public GetHit(): void {
+	public GetHit(batle: number): void {
 		this.Actions.Execute(CharacterAction.GotHit);
-		this.Damage += 10;
+		this.Damage = this.playerOne
+			? this.Damage + 10 * batle
+			: this.Damage + 10;
 	}
 
 	public Die(timeOver: boolean = false): void {

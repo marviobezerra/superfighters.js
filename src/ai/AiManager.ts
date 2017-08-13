@@ -6,7 +6,7 @@ export class AiManager {
 
 	static proximityRange: number = 300;
 	static punching: boolean = false;
-	static aiBehaviorChangeInterval: number = 50; //Level of dificulty
+	static aiBehaviorChangeInterval: number = 30; //Level of dificulty
 
 	static AiCheck(player: Character, enemy: Character, ticks: number) {
 		if (ticks % this.aiBehaviorChangeInterval === Math.floor((Math.random() * 10))) {

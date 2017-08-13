@@ -38,7 +38,14 @@ export class GameFight extends SceneBase {
 		this.TickEvent = this.Tick.bind(this);
 	}
 
-	public Register(): void {
+	public Register(args: any): void {
+
+		if (args) {
+			this.Battle = 0;
+			this.Playing = false;
+			this.FightElements.BuildLists();
+		}
+
 		document.addEventListener('keydown', this.KeyDownEvents, false);
 		createjs.Ticker.addEventListener("tick", this.TickEvent);
 		this.Start();
@@ -144,7 +151,6 @@ export class GameFight extends SceneBase {
 		this.FightElements.UpdatePlayerDamageBar(false, this.PlayerTwo.Damage);
 		this.Timer = 90;
 		this.FightElements.CreateTimerText();
-		this.FightElements.ResetDamageBar();
 
 		this.DiplayInfo(FightInfo.Ready);
 	}
@@ -170,7 +176,6 @@ export class GameFight extends SceneBase {
 			default:
 				break;
 		}
-
 
 		AiManager.aiBehaviorChangeInterval = level;
 		this.TimerLoop();

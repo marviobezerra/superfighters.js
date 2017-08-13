@@ -110,7 +110,7 @@ export class GameMenu extends SceneBase {
 				this.PlayBackGroundMusic();
 				break;
 			case 'Enter':
-				//this.PlayChoose();
+				this.PlayChoose();
 				switch (this.CurrentOption) {
 					case Option.Play:
 						this.Manager.Load(SceneType.PlayerSelect);
@@ -151,12 +151,10 @@ export class GameMenu extends SceneBase {
 	}
 
 	private PlaySelect(): void {		
-		let instance = createjs.Sound.play('select');
-		// instance.volume = 0.1;
+		//createjs.Sound.play('select');
 	}
 
 	private PlayChoose():void{		
-		let instance = createjs.Sound.play('coin');
-		// instance.volume = 0.1;
+		//createjs.Sound.play('coin');
 	}
 }

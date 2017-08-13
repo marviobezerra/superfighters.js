@@ -120,7 +120,7 @@ export class GamePlayerSelect extends SceneBase {
 				break;
 			case 'Enter':
 				this.PlayChoose();
-				this.Manager.Load(SceneType.Fight);
+				this.Manager.Load(SceneType.Fight, true);
 		}
 	}
 
@@ -147,12 +147,10 @@ export class GamePlayerSelect extends SceneBase {
 	}
 
 	private PlaySelect(): void {		
-		//let instance = createjs.Sound.play('select');
-		// instance.volume = 0.1;
+		createjs.Sound.play('select');
 	}
 
 	private PlayChoose():void{		
-		//let instance = createjs.Sound.play('choose');
-		// instance.volume = 0.1;
+		createjs.Sound.play('choose');
 	}
 }

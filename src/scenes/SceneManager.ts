@@ -20,7 +20,7 @@ export enum SceneType {
 }
 
 export interface IManager {
-	Load(sceneType: SceneType): void;
+	Load(sceneType: SceneType, args?: any): void;
 	AssetsManager: AssetsManager;
 	Canvas: HTMLCanvasElement,
 	CurrentCaracter: PlayerFight
@@ -33,14 +33,11 @@ export class SceneManager implements IManager {
 	public CurrentCaracter = PlayerFight.Kyo;
 
 	constructor(private Stage: createjs.Stage, public AssetsManager: AssetsManager, public Canvas: HTMLCanvasElement) {
-		this.CurrentCaracter = PlayerFight.Yory;
-		//this.Load(SceneType.Fight);
-		//this.Load(SceneType.Menu);
-		this.Load(SceneType.Splash); // Not working for know. 
-		//this.Load(SceneType.Continue);
+		this.Load(SceneType.Menu);
+		//this.Load(SceneType.Splash); 
 	}
 
-	public Load(sceneType: SceneType): void {
+	public Load(sceneType: SceneType, args?: any): void {
 		if (!this.Scenes[sceneType]) {
 			this.Scenes[sceneType] = this.ResolveScene(sceneType);
 		}
@@ -51,7 +48,7 @@ export class SceneManager implements IManager {
 		}
 
 		this.CurrentScene = this.Scenes[sceneType];
-		this.CurrentScene.Register();
+		this.CurrentScene.Register(args);
 		this.Stage.addChild(this.CurrentScene);
 	}
 

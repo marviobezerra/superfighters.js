@@ -15,7 +15,7 @@ export enum CharacterAction {
 
 export class CharacterActions {
 	private WalkSpeed = 35;
-	private JumpSize = 200;
+	private JumpSize = 250;
 	private AfterAnimationEvent: any;
 	private BlockAction = false;
 	private AnimationsStop = [Animations.Die, Animations.Win, Animations.TimeOver];
@@ -75,7 +75,9 @@ export class CharacterActions {
 		}
 
 		let newPos = this.player.x + this.WalkSpeed;
-		let limit = this.player.manager.Canvas.width - this.player.getBounds().width;
+		let limit = this.player.Flip
+			? this.player.manager.Canvas.width
+			: this.player.manager.Canvas.width - this.player.getBounds().width;
 		this.player.x = newPos > limit ? limit : newPos;
 
 		this.player.UpdateHitBorder();
@@ -97,24 +99,33 @@ export class CharacterActions {
 	}
 
 	private ExecuteJump(): void {
-		if (this.player.PlayingAnimation !== Animations.Jump) {
-			this.player.gotoAndPlay(Animations.Jump);
-			this.player.PlayingAnimation = Animations.Jump;
+		if (this.player.PlayingAnimation === Animations.Jump) {
+			return;
 		}
 
-		let newPos = this.player.y;
+		this.player.gotoAndPlay(Animations.Jump);
+		this.player.PlayingAnimation = Animations.Jump;
+		
+		let jumpX1 = (this.JumpSize / 2);
+		let jumpX2 = this.JumpSize;
+
+		if (this.player.Flip) {
+			jumpX1 = jumpX1 * -1;
+			jumpX2 = jumpX2 * -1;
+		}
 
 		createjs.Tween
-			.get(this)
+			.get(this.player)
 			.to({
-				y: newPos - this.JumpSize,
-				x: this.player.x + (this.JumpSize / 2)
+				y: this.player.y - this.JumpSize,
+				x: this.player.x + jumpX1
 			}, 300)
 			.to({
-				y: newPos,
-				x: this.player.x + this.JumpSize
+				y: this.player.Ground,
+				x: this.player.x + jumpX2
 			}, 300)
 			.call(() => {
+				this.CheckLimit();
 				this.player.gotoAndPlay(Animations.Stand);
 				this.player.PlayingAnimation = Animations.Stand;
 				this.player.UpdateHitBorder();
@@ -194,5 +205,15 @@ export class CharacterActions {
 		this.player.PlayingAnimation = Animations.Stand;
 		this.BlockAction = false;
 		this.player.UpdateHitBorder();
+	}
+
+	private CheckLimit(): void {
+		let limit = this.player.Flip
+			? this.player.manager.Canvas.width
+			: this.player.manager.Canvas.width - this.player.getBounds().width;
+
+		if (this.player.x > limit) {
+			this.player.x = limit;
+		}
 	}
 }

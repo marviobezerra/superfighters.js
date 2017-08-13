@@ -138,8 +138,8 @@ export class GameFightElements {
 		}
 
 		let border = new createjs.Shape();
-		let command = border.graphics
 
+		let command = border.graphics
 			.beginFill("#f54848")
 			.command;
 
@@ -234,9 +234,11 @@ export class GameFightElements {
 	}
 
 	public UpdatePlayerInfo(): void {
+		
 		// Update the background image
 		this.BackGroundImage.image = this.fight.Manager.AssetsManager.Load(this.BackGround[this.fight.Battle]);
 		this.AdjustBackgroundSize();
+
 		// Update the PlayerOne and PlayerTwo Text
 		this.CreatePlayerText(true);
 		this.CreatePlayerText(false);
@@ -246,12 +248,13 @@ export class GameFightElements {
 		this.CreatePlayerImage(false);
 	}
 
-	public ResetDamageBar(): void {
-		this.UpdatePlayerDamageBar(true, 0);
-		this.UpdatePlayerDamageBar(false, 0);
-	}
-
 	public UpdatePlayerDamageBar(playerOne: boolean, value: number) {
+
+		if (value === 0) {
+			this.CreateDamageBar(playerOne);
+			return;
+		}
+
 		let damageBar = playerOne
 			? this.PlayerOneDamageBar
 			: this.PlayerTwoDamageBar;
@@ -268,7 +271,7 @@ export class GameFightElements {
 			: size;
 
 		damageBar.graphics.drawRect(0, 0, size, 38);
-		damageBar.setBounds(0, 0, size, 40);
+		damageBar.setBounds(0, 0, size, 38);
 		damageBar.x = playerOne ? powerBar.x + 1 : (powerBar.x + powerBar.getBounds().width) - 1 - size;
 
 	}
@@ -296,10 +299,9 @@ export class GameFightElements {
 		this.fight.addChild(this.TimerText);
 	}
 
-	private BuildLists(): void {
+	public BuildLists(): void {
 
 		this.BackGround = [GameAssets.FightBackGround01, GameAssets.FightBackGround02, GameAssets.FightBackGround03];
-
 		this.OponentList = [];
 
 		for (let item in PlayerFight) {

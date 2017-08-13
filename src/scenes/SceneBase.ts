@@ -6,6 +6,6 @@ export abstract class SceneBase extends createjs.Container {
 		super();
 	}
 
-	abstract Register(): void;
+	abstract Register(args?: any): void;
 	abstract UnRegister(): void;
 } 

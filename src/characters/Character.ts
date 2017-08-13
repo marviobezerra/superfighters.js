@@ -17,7 +17,7 @@ export enum Animations {
 
 export class Character extends createjs.Sprite {
 
-	private Ground = 450;
+	public Ground = 450;
 	private KeyDownEvents: any;
 	private KeyUpEvents: any;
 	public PlayingAnimation: Animations;
@@ -89,10 +89,12 @@ export class Character extends createjs.Sprite {
 	}
 
 	public GetHit(batle: number): void {
-		this.Actions.Execute(CharacterAction.GotHit);
 		this.Damage = this.playerOne
-			? this.Damage + 10 * batle
+			? this.Damage + (10 * (batle + 1))
 			: this.Damage + 10;
+
+		this.Actions.Execute(CharacterAction.GotHit);
+
 	}
 
 	public Die(timeOver: boolean = false): void {
@@ -121,8 +123,8 @@ export class Character extends createjs.Sprite {
 
 		let border = new createjs.Shape();
 		let command = border.graphics
-			.beginStroke("#2223f3")
-			.setStrokeStyle(2)
+			// .beginStroke("#2223f3")
+			// .setStrokeStyle(2)
 			.command;
 
 		let bounds = this.getBounds();

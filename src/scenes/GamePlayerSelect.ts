@@ -42,6 +42,7 @@ export class GamePlayerSelect extends SceneBase {
 	}
 
 	public Register(): void {
+		this.RegisterSounds();
 		document.addEventListener('keydown', this.KeyBoardEvents, false);
 	}
 

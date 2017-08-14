@@ -16,11 +16,10 @@ export class GameControl extends SceneBase {
 		this.RegisterSounds();
 
 		this.KeyDownEvents = this.RegisterEvents.bind(this);
-
 	}
 
 	private RegisterEvents(event: KeyboardEvent): void {
-		this.Manager.Load(SceneType.PlayerSelect);
+		this.Manager.Load(SceneType.Menu);
 	}
 
 	private AddBackground(): void {
@@ -63,7 +62,6 @@ export class GameControl extends SceneBase {
 
 	public Register(): void {
 		document.addEventListener('keydown', this.KeyDownEvents, false);
-
 		this.AdjustBackgroundSize();
 	}
 

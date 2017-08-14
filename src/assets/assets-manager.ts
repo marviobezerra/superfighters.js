@@ -14,6 +14,14 @@ import '../../data/images/backgrounds/FightBackGround-01.jpg';
 import '../../data/images/backgrounds/FightBackGround-02.jpg';
 import '../../data/images/backgrounds/FightBackGround-03.jpg';
 
+import '../../data/images/backgrounds/Final-BG00.jpg';
+import '../../data/images/backgrounds/Final-BG01.jpg';
+import '../../data/images/backgrounds/Final-BG02.png';
+import '../../data/images/backgrounds/Final-BG03.jpg';
+import '../../data/images/backgrounds/Final-BG04.jpg';
+import '../../data/images/backgrounds/Final-BG05.jpg';
+import '../../data/images/backgrounds/Final-BG06.jpg';
+import '../../data/images/backgrounds/Final-BG07.jpg';
 
 import '../../data/spritesheets/Anoel-0.png';
 import '../../data/spritesheets/Anoel-1.png';
@@ -40,6 +48,8 @@ import '../../data/sounds/common/Selecting_Sound_Effect.mp3';
 import '../../data/sounds/common/new_challenger.mp3';
 import '../../data/sounds/common/common_00006.mp3';
 
+
+
 import '../../data/sounds/common/nine.mp3'
 import '../../data/sounds/common/eight.mp3'
 import '../../data/sounds/common/seven.mp3'
@@ -58,7 +68,16 @@ export enum GameAssets {
 	Splash = 'Splash',
 	FightBackGround01 = 'FightBackGround01',
 	FightBackGround02 = 'FightBackGround02',
-	FightBackGround03 = 'FightBackGround03'
+	FightBackGround03 = 'FightBackGround03',
+
+	FinalBackGround00 = 'Final-BG00',
+	FinalBackGround01 = 'Final-BG01',
+	FinalBackGround02 = 'Final-BG02',
+	FinalBackGround03 = 'Final-BG03',
+	FinalBackGround04 = 'Final-BG04',
+	FinalBackGround05 = 'Final-BG05',
+	FinalBackGround06 = 'Final-BG06',
+	FinalBackGround07 = 'Final-BG07',
 }
 
 export enum PlayerSelect {
@@ -122,6 +141,15 @@ export class AssetsManager {
 				{ "id": GameAssets.FightBackGround01, "src": "/data/images/backgrounds/FightBackGround-01.jpg" },
 				{ "id": GameAssets.FightBackGround02, "src": "/data/images/backgrounds/FightBackGround-02.jpg" },
 				{ "id": GameAssets.FightBackGround03, "src": "/data/images/backgrounds/FightBackGround-03.jpg" },
+
+				{ "id": GameAssets.FinalBackGround00, "src": "/data/images/backgrounds/Final-BG00.jpg" },
+				{ "id": GameAssets.FinalBackGround01, "src": "/data/images/backgrounds/Final-BG01.jpg" },
+				{ "id": GameAssets.FinalBackGround02, "src": "/data/images/backgrounds/Final-BG02.png" },
+				{ "id": GameAssets.FinalBackGround03, "src": "/data/images/backgrounds/Final-BG03.jpg" },
+				{ "id": GameAssets.FinalBackGround04, "src": "/data/images/backgrounds/Final-BG04.jpg" },
+				{ "id": GameAssets.FinalBackGround05, "src": "/data/images/backgrounds/Final-BG05.jpg" },
+				{ "id": GameAssets.FinalBackGround06, "src": "/data/images/backgrounds/Final-BG06.jpg" },
+				{ "id": GameAssets.FinalBackGround07, "src": "/data/images/backgrounds/Final-BG07.jpg" },
 
 				{ "id": PlayerFight.May, "src": "/data/spritesheets/Iam.json" },
 				{ "id": PlayerFight.Leona, "src": "/data/spritesheets/Anoel.json" },

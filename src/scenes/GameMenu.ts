@@ -93,7 +93,7 @@ export class GameMenu extends SceneBase {
 
 	private LoadHandler(event: createjs.Event): void {
 		if (event.id === 'bg1') {
-			//this.PlayBackGroundMusic();
+			this.PlayBackGroundMusic();
 		}
 	}
 

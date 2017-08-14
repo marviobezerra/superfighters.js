@@ -13,7 +13,7 @@ export class GameOver extends SceneBase {
 		
 		this.KeyDownEvents = this.RegisterKeyDownEvents.bind(this);
 		this.AddBackground();
-		this.registerSounds();		
+				
 	}
 
 	drawTextLayer() {
@@ -49,6 +49,7 @@ export class GameOver extends SceneBase {
 	}
 
 	public Register(): void {
+		this.registerSounds();
 		document.addEventListener('keydown', this.KeyDownEvents, false);
 		this.drawTextLayer();
 	}

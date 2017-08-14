@@ -95,7 +95,6 @@ export class CharacterActions {
 
 		this.player.UpdateHitBorder();
 		this.fight.PlayerMove();
-
 	}
 
 	private ExecuteJump(): void {
@@ -105,7 +104,7 @@ export class CharacterActions {
 
 		this.player.gotoAndPlay(Animations.Jump);
 		this.player.PlayingAnimation = Animations.Jump;
-		
+
 		let jumpX1 = (this.JumpSize / 2);
 		let jumpX2 = this.JumpSize;
 

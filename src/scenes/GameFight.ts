@@ -89,6 +89,7 @@ export class GameFight extends SceneBase {
 		}
 
 		this.FightInfoText = new createjs.Text(info, "100px Haettenschweiler", "#FFF");
+		this.FightInfoText.shadow = new createjs.Shadow("#000", 4, 4, 8);
 
 		this.addChild(this.FightInfoText);
 
@@ -116,6 +117,12 @@ export class GameFight extends SceneBase {
 
 				if (value === FightInfo.Winner) {
 					this.Battle++;
+
+					if  (this.Battle > 2) {
+						this.Manager.Load(SceneType.Winner);
+						return;
+					}
+
 					this.Start();
 					return;
 				}
